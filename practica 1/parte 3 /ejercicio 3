@@ -1,0 +1,78 @@
+program ej3p3;
+var 
+  caracter:char;
+  menor1_40,vol_menor_800,cant_c,cant_r:integer;
+  vol_prom_c,vol_prom_r,vol_total_c,vol_total_r,vol_act,vol_mayor1,vol_mayor2:real;
+  ancho,largo,alto,radio,alto_c:real;
+begin 
+  vol_mayor1:=0;
+  vol_mayor2:=0;
+  menor1_40:=0;
+  vol_menor_800:=0;
+  cant_r:=0;
+  cant_c:=0;
+  vol_total_r:=0;
+  vol_total_c:=0;
+  writeln('ingrese el caracter del tipo de tanque ');
+  writeln('ingrese R (rectangular) o ingrese C (cilindrico)');
+  writeln('para finalizar ingrese z');
+  readln(caracter);
+  while(caracter <> 'z')do begin 
+    if(caracter='r')or(caracter='c')then begin
+      vol_act:=0;
+      if(caracter='r')then begin 
+        writeln('ingrese su ancho');
+        readln(ancho);
+        writeln('ingrese su largo');
+        readln(largo);
+        writeln('ingrese su alto');
+        readln(alto);
+        vol_act:=ancho*largo*alto;
+        vol_total_r:=vol_total_r+vol_act;
+        cant_r:=cant_r+1;
+        if(alto<1.40)then begin
+          menor1_40:=menor1_40+1;
+        end;
+      end
+      else begin 
+        if(caracter='c')then begin 
+          writeln('ingrese su radio');
+          readln(radio);
+          writeln('ingrese su alto');
+          readln(alto_c);
+          vol_act:=3.14159265359*radio*alto_c;
+          vol_total_c:=vol_total_c+vol_act;
+          cant_c:=cant_c+1;
+          if(alto_c<1.40)then begin
+            menor1_40:=menor1_40+1;
+          end;
+        end;
+      end;
+      if(vol_act>vol_mayor1)then begin 
+        vol_mayor2:=vol_mayor1;
+        vol_mayor1:=vol_act;
+      end
+      else begin 
+        if(vol_act>vol_mayor2)then begin
+          vol_mayor2:=vol_act;
+        end;
+      end;
+      if(vol_act<0.8)then begin 
+        vol_menor_800:=vol_menor_800+1;
+      end;
+    end;
+    writeln('ingrese el caracter del tipo de tanque ');
+    writeln('ingrese R (rectangular) o ingrese C (cilindrico)');
+    writeln('para finalizar ingrese z');
+    readln(caracter);
+  end;
+  vol_prom_r:=vol_total_r/cant_r;
+  vol_prom_r:=vol_prom_r*100;
+  vol_prom_c:=vol_total_c/cant_c;
+  vol_prom_c:=vol_prom_c*100;
+  writeln('el volumen de los dos mayores tanques son: ',vol_mayor1,'y',vol_mayor2);
+  writeln('el volumen promedio de todos los tanques cilindricos vendidos es: ',vol_prom_c);
+  writeln('el volumen promedio de todos los tanques rectangulares vendidos es: ',vol_prom_r);
+  writeln('la cantidad de tanques con una altura menor a 1.40 es: ',menor1_40);
+  writeln('la cantidad de tanques con volumen menor a 800 centimetros cubicos son: ',vol_menor_800);
+end.
