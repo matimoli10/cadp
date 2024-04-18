@@ -1,6 +1,6 @@
 program ej2p3;
 var 
-  i,legajo,notas,cant_i,cant_r,cant_i_cumple,cant_r_cumple,todas,cero,leg1,leg2,mayor10,mayor_10,mayor0,mayor_0,leg_1,leg_2,ausente,total,mayor_6_5,cant0,cant10,al_menos_1_0:integer;
+  i,legajo,notas,cant_i,cant_r,cant_i_cumple,cant_r_cumple,todas,cero,leg1,leg2,mayor10,mayor_10,mayor0,mayor_0,leg_1,leg_2,ausente,total,mayor_6_5,cant0,cant10:integer;
   condicion:char;
   porcentaje_i,porcentaje_r,prom:real;
 
@@ -13,11 +13,10 @@ begin
   mayor10:=0;
   mayor_10:=0;
   prom:=0;
-  cero:=0;
   mayor0:=0;
   mayor_0:=0;
   mayor_6_5:=0;
-  al_menos_1_0:=0;
+  cero:=0;
   writeln('ingrese un numero de legajo:');
   readln(legajo);
   while(legajo<>-1)do begin 
@@ -27,7 +26,6 @@ begin
       total:=0;
       cant0:=0;
       cant10:=0;
-      cero:=0;
       writeln('ingrese las notas');
       for i:=1 to 5 do begin 
         write(' ');
@@ -35,49 +33,47 @@ begin
         if(notas<4)then begin
           ausente:=ausente+1;
           if(notas=0)then begin 
-            if (cero<>1)then begin
-              cero:=cero+1;
-            end;
             cant0:=cant0+1;
-            if(cant0>mayor0)then begin 
-              leg_2:=leg_1;
-              mayor_0:=mayor0;
-              leg_1:=legajo;
-              mayor0:=cant0;
-            end
-            else begin 
-              if (cant0>mayor_0)then begin
-                leg_2:=legajo;
-                mayor_0:=cant0;
-              end;
-            end;
           end;
         end
         else begin
           If(notas=10)then begin 
             cant10:=cant10+1;
-            if (cant10>mayor10)then begin 
-              leg2:=leg1;
-              mayor_10:=mayor10;
-              leg1:=legajo;
-              mayor10:=cant10;
-            end
-            else begin 
-              if (cant10>mayor_10)then begin 
-                leg2:=legajo;
-                mayor_10:=cant10;
-              end;
-            end;
           end;
         end;
         total:=total+notas;
-        al_menos_1_0:=al_menos_1_0+cero
-      end;  
+      end;
+      if (cant10>mayor10)then begin 
+          leg2:=leg1;
+          mayor_10:=mayor10;
+          leg1:=legajo;
+          mayor10:=cant10;
+      end
+      else begin 
+        if (cant10>mayor_10)then begin 
+          leg2:=legajo;
+          mayor_10:=cant10;
+        end;
+      end;
+      if(cant0<>0)then begin 
+        cero:=cero+1;
+        if(cant0>mayor0)then begin 
+          leg_2:=leg_1;
+          mayor_0:=mayor0;
+          leg_1:=legajo;
+          mayor0:=cant0;
+        end
+        else begin 
+          if (cant0>mayor_0)then begin
+            leg_2:=legajo;
+            mayor_0:=cant0;
+          end;
+        end;
+      end;
       prom:=total/i;
       if(prom>6.5)then begin 
         mayor_6_5:=mayor_6_5+1;
       end;
-        
       if(condicion='i')then begin
         cant_i:=cant_i+1;
         if(ausente<2)then begin{tiene que ser menor a 2 ya que si es 2 es menos del 75% de asistencia}
@@ -109,7 +105,7 @@ begin
     writeln('los recursantes que cumple condicion son: ',cant_r_cumple,' el porcentaje sobre el total es: ',porcentaje_r);
     writeln('la cantidad de alumos que aprobaron todas las autoevaluaciones son: ',todas);
     writeln('la cantidad de alumnos que la nota promedio fue mayor a 6.5 es: ',mayor_6_5);
-    writeln('la cantidad de alumnos que obtuvieron al menos un cero es: ',al_menos_1_0);
+    writeln('la cantidad de alumnos que obtuvieron al menos un cero es: ',cero);
     writeln('legajo del alumno con mas dieces: ',leg1,' el legajo del segundo alumno es: ',leg2);
     writeln('legajo del alumno con mas ceros: ',leg_1,' el legajo del segundo alumno es: ',leg_2);
  end.
