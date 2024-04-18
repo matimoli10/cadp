@@ -1,0 +1,49 @@
+8. Dado el siguiente programa:
+
+program anidamientos;
+procedure leer;
+var
+letra : char;
+function analizarLetra : boolean
+begin
+if (letra >= ‘a’) and (letra <= ‘z’) then
+analizarLetra := true;
+else
+if (letra >= ‘A’) and (letra <= ‘Z’) then
+analizarletra := false;
+end; { fin de la funcion analizarLetra }
+begin
+readln(letra);
+if (analizarLetra) then
+writeln(‘Se trata de una minúscula’)
+else
+writeln(‘Se trata de una mayúscula’);
+end; { fin del procedure leer}
+var
+ok : boolean;
+begin { programa principal }
+leer;
+ok := analizarLetra;
+if ok then
+writeln(‘Gracias, vuelva prontosss’);
+end.
+
+a. La función analizarLetra fue declarada como un submódulo dentro del procedimiento leer, pero esto
+puede traer problemas en el código del programa principal.
+
+i) ¿Qué clase de problema encuentra?
+ii) ¿Cómo se puede resolver el problema para que el programa compile y funcione correctamente?
+
+b. La función analizarLetra parece incompleta, ya que no cubre algunos valores posibles de la variable
+letra.
+
+i) ¿De qué valores se trata?
+ii) ¿Qué sucede en nuestro programa si se ingresa uno de estos valores?
+iii) ¿Cómo se puede resolver este problema?
+
+a) i) el problema que podemos ver es que al declarar una funcion dentro de un procedimiento,cuando llamamos a esta funcion va a tirar codigo de error ya que,esta funcion solo va a ser visible dentro del procedimiento.
+   ii)para resolver el problema, simplemente tenemos que declarar la funcion fuera del procedimiento, ya de esa forma no tendriamos el problema.
+
+b) i) los valores que no cubre la funcion son: los puntos,los caracteres,los numero
+   ii) di llegsdo el caso se llega a ingresar uno de esos valores lo que va a pasar es que al no estar entre los valores de la funcion no sabemos que resultado nos va a devolver.
+   iii) lo que se puede hacer en general es poner dentro de la funcion para ese caso,un tipo de respuesta predeterminada, pero como es booleano y se usan ambos casos en este programa,lo que podriamos hacer es que antes de ir a la funcion, evaluar si el caracter ingresado se encuentra entre los usados en la funcion.
