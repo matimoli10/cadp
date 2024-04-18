@@ -1,0 +1,30 @@
+program j1p3;
+var 
+   monto,prom,mayor,inversion: real;
+   i,cod,cant,cod_em,cant_em: integer;
+begin 
+  inversion:=0;
+  cant_em:=0;
+  mayor:=0;
+  repeat 
+    readln(cod);
+    readln(cant);
+    i:=cant;
+    while (i<>0)do begin
+      readln(monto);
+      inversion:=inversion+monto;
+      i:=i-1
+    end;
+    prom:=inversion/cant;
+    if(inversion>mayor)then begin
+      cod_em:=cod;
+      mayor:=inversion;
+    end;
+    if(inversion>50000)then begin 
+      cant_em:=cant_em+1;
+    end;
+    write(prom);
+  until(cod=100);
+  write(cod_em);
+  write(cant_em);
+end.
