@@ -1,1 +1,27 @@
+program ej6p1;
+  procedure mayor_par (var mayor:integer;num:integer);
+  begin
+    if(mayor<num)then begin
+      mayor:=num;
+    end;
+  end; 
+  
+  procedure ingreso(var num:integer;var mayor:integer);
+  begin 
+    writeln('ingrese un numero: ');
+    readln(num);
+    if(num mod 2=0)then begin
+      mayor_par (mayor,num);
+    end;
+  end;
+  
+var
+  num,mayor:integer;
+begin
+  ingreso (num,mayor);
+  while (num >0)do begin 
+    ingreso (num,mayor);
+  end;
+  writeln('el numero mayor de los pares es: ',mayor);
+end.
 
