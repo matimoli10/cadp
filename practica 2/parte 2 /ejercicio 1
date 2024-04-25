@@ -1,1 +1,30 @@
+1. Responda las preguntas en relación al siguiente programa:
 
+program Ejercicio3;
+  procedure suma(num1: integer; var num2:integer);
+    begin
+      num2 := num1 + num2;
+      num1 := 0;
+    end;
+var
+  i, x : integer;
+begin
+  read(x); { leo la variable x }
+  for i:= 1 to 5 do
+  suma(i,x);
+  write(x); { imprimo las variable x }
+end.
+
+a. ¿Qué imprime si se lee el valor 10 en la variable x ?
+
+b. Qué imprime si se lee el valor 10 en la variable x y se cambia el encabezado del procedure por:
+procedure suma(num1: integer; num2:integer);
+
+c. Qué sucede si se cambia el encabezado del procedure por:
+procedure suma(var num1: integer; var num2:integer);
+
+a)los que va a imprimer en la primera interaccion va a ser 11, en la segunda 13, en la tercera 16, en la cuarta 20,en la quienta 25.
+
+b)lo que se va a leer va a ser que en todas interacciones el valor de x va a ser 10, ya que como no esta pasado por valor no devuelde el valor que queda en x con el prodecedure.
+
+c)en la primer interaccion va a imprimir que x es 11, en la segunda se rompio el programa ya que dentro del procedure le pone que num1:=0 y en num 1 esta el valor de i que se iusa en el for para llevar la cuenta de las interacciones a realizar.
