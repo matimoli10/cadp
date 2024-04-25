@@ -1,0 +1,36 @@
+8. Realizar un programa modularizado que lea secuencia de números enteros. La lectura finaliza cuando
+llega el número 123456, el cual no debe procesarse. Informar en pantalla para cada número la suma de sus
+dígitos pares y la cantidad de dígitos impares que posee.
+
+  PREGUNTAR EN CLASE
+
+program ejercicio8;
+  procedure cantidad (num:integer;var suma_pares:integer;var cant_impares:integer);
+    var
+      dig:integer;
+    begin 
+      while (num <> 0)do begin 
+        dig:=num mod 10;
+        if ((dig mod 2)=0)then begin
+          suma_pares:=suma_pares+dig;
+        end
+        else
+          cant_impares:=cant_impares+1;
+        num:=num div 10;
+      end;
+    end;
+var 
+  num,suma_pares,cant_impares:integer;
+begin 
+  writeln('ingrese una secuencia de numeros esteros:');
+  readln(num);
+  while (num <> 123456)do begin
+    suma_pares:=0;
+    cant_impares:=0;
+    cantidad(num,suma_pares,cant_impares);
+    writeln('la suma de sus digitos pares es: ',suma_pares);
+    writeln('la cantidad de digitos impares que posee es: ',cant_impares);
+    writeln('ingrese una secuencia de numeros esteros:');
+    readln(num);
+  end;
+end.
