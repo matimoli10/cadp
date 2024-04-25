@@ -1,0 +1,82 @@
+9. Realizar un programa modularizado que lea información de alumnos de una facultad. Para cada alumno se
+lee: número de inscripción, apellido y nombre. La lectura finaliza cuando se ingresa el alumno con número
+de inscripción 1200, que debe procesarse. Se pide calcular e informar:
+● Apellido de los dos alumnos con número de inscripción más chico.
+● Nombre de los dos alumnos con número de inscripción más grande.
+● Porcentaje de alumnos con nro de inscripción par.
+
+program ejercicio9;
+  procedure ingreso (var num_incripcion:integer;var apellido,nombre:string);
+    begin 
+      writeln('ingrese el numero de inscripcion');
+      readln(num_incripcion);
+      writeln('ingrese el apellido');
+      readln(apellido);
+      writeln('ingrese el nombre');
+      readln(nombre);
+    end;
+  procedure mas_chico (num_incripcion:integer;apellido:string;var apellido1,apellido2:string;var num_incripcion1,num_incripcion2:integer);   
+    begin
+      if (num_incripcion<num_incripcion1)then begin 
+        num_incripcion2:=num_incripcion1;
+        apellido2:=apellido1;
+        num_incripcion1:=num_incripcion;
+        apellido1:=apellido;
+      end
+      else begin
+        if (num_incripcion<num_incripcion2)then begin 
+          num_incripcion2:=num_incripcion;
+          apellido2:=apellido;
+        end;
+      end;
+    end;
+procedure mas_grande (num_incripcion:integer;nombre:string;var nombre1,nombre2:string;var num_incripcion_1,num_incripcion_2:integer);
+  begin
+    if(num_incripcion>num_incripcion_1)then begin 
+      num_incripcion_2:=num_incripcion_1;
+      nombre2:=nombre1;
+      num_incripcion_1:=num_incripcion;
+      nombre1:=nombre;
+    end
+    else begin
+      if(num_incripcion>num_incripcion_2)then begin
+        num_incripcion_2:=num_incripcion;
+        nombre2:=nombre;
+      end;
+    end;
+  end;
+function cumple (num_incripcion:integer):boolean;
+  begin 
+    if ((num_incripcion mod 2)=0)then begin 
+      cumple:= true;
+    end
+    else begin
+      cumple:=false 
+    end;
+  end;
+
+var
+  num_incripcion,num_incripcion1,num_incripcion2,num_incripcion_1,num_incripcion_2,total,cant:integer;
+  apellido,apellido1,apellido2,nombre,nombre1,nombre2:string;
+  porcentaje:real;
+begin
+  total:=0;
+  cant:=0;
+  num_incripcion1:=9999;
+  num_incripcion2:=9999;
+  num_incripcion_1:=0;
+  num_incripcion_2:=0;
+  repeat
+    ingreso(num_incripcion,apellido,nombre);
+    mas_chico(num_incripcion,apellido,apellido1,apellido2,num_incripcion1,num_incripcion2);
+    mas_grande(num_incripcion,nombre,nombre1,nombre2,num_incripcion_1,num_incripcion_2);
+    if(cumple(num_incripcion))then 
+      cant:=cant+1;
+    total:=total+1;
+  until(num_incripcion = 1200);
+  porcentaje:= cant/total;
+  porcentaje:=porcentaje*100;
+  writeln('el apellido de las dos presonas con numero de inscripcion mas chico son: ',apellido1,' y ',apellido2);
+  writeln('el nombre de las dos presonas con numero de inscripcion mas grande son: ',nombre1,' y ',nombre2);
+  writeln('el porcentaje de alumnos con numero de inscripcion par es: ',porcentaje);
+end.
