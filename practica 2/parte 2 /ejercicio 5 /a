@@ -1,0 +1,38 @@
+5. a. Realizar un módulo que reciba un par de números (numA,numB) y retorne si numB es el doble de
+numA.
+
+program ejercicio_5a;
+procedure retorno (numA:integer;numB:integer; var doble:boolean);
+  begin 
+    if (numA<numB)then begin 
+      doble:= cumple (numA,numB);
+    end  
+    else begin
+      if (numB<numA)then 
+        doble:= false;
+    end;
+  end;
+function cumple (numA:integer,numB:integer):boolean ;
+  begin
+    numB:=numB-numA;
+    if (numB = numA)then begin
+      cumple:= true;
+    else 
+      cumple:= false;
+  end;
+var 
+  numA,numB:integer;
+  doble:boolean;
+begin 
+  readln(numA);
+  readln(numB);
+  retorno(numA,numB,doble);
+  if (doble = true)then begin
+    write('numB es el doble de numA');
+  end
+  else
+    if (doble=false)then begin 
+      write('numB no es el doble de numA');
+    end;
+  end;
+end.
