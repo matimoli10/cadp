@@ -41,7 +41,7 @@ b. Utilizando el módulo realizado en el inciso a., realizar un programa que lea
 números hasta encontrar el par (0,0), e informe la cantidad total de pares de números leídos y la cantidad
 de pares en las que numB es el doble de numA.
 
-program ejercicio_5a;
+program ejercicio_5b;
 function cumple (numA:integer;numB:integer):boolean ;
   begin
     numB:=numB-numA;
