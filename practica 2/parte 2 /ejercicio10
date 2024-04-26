@@ -1,0 +1,45 @@
+10. Realizar un programa modularizado que lea una secuencia de caracteres y verifique si cumple con el
+patrón A$B#, donde:
+- A es una secuencia de sólo letras vocales
+- B es una secuencia de sólo caracteres alfabéticos sin letras vocales
+- los caracteres $ y # seguro existen
+Nota: en caso de no cumplir, informar que parte del patrón no se cumplió.
+
+program ejercicio10;
+  procedure ingreso (var car1,car2,car3,car4:char);
+    begin 
+      writeln('ingrese el primer caracter: ');
+      readln(car1);
+      writeln('ingrese el segundo caracter: ');
+      readln(car2);
+      writeln('ingrese el tercer caracter: ');
+      readln(car3);
+      writeln('ingrese el cuarto caracter: ');
+      readln(car4);
+    end;
+  procedure comprobar(car1,car2,car3,car4:char);
+    begin 
+      if (car1='a')or(car1='e')or(car1='i')or(car1='o')or(car1='u')then begin 
+        if (car2 = '$')or(car2='#')then begin
+           if ((car3>'a')and(car3<='z')) and ((car3<>'a')or(car3<>'e')or(car3<>'i')or(car3<>'o')or(car3<>'u')) then begin
+             if (car2 = '$')or(car2='#')then begin
+               writeln('se cumple el patron');
+             end
+             else
+               writeln('no se cumplio la parte del cuarto caracter');
+           end
+           else
+             writeln('no se cumplio la parte del tercer caracter');
+        end
+        else 
+          writeln('no se cumplio la parte del segundo caracter');
+      end
+      else 
+        writeln('no se cumplio la parte del primer caracter');
+    end;
+var 
+  car1,car2,car3,car4:char;
+begin
+  ingreso(car1,car2,car3,car4);
+  comprobar(car1,car2,car3,car4);
+end.
