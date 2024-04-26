@@ -22,7 +22,7 @@ program ejercicio10;
       if (car1='a')or(car1='e')or(car1='i')or(car1='o')or(car1='u')then begin 
         if (car2 = '$')or(car2='#')then begin
            if ((car3>'a')and(car3<='z')) and ((car3<>'a')or(car3<>'e')or(car3<>'i')or(car3<>'o')or(car3<>'u')) then begin
-             if (car2 = '$')or(car2='#')then begin
+             if (car4 = '$')or(car4='#')then begin
                writeln('se cumple el patron');
              end
              else
