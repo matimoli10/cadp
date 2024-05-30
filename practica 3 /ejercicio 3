@@ -11,68 +11,87 @@ a. Un módulo para la lectura de la información de la escuela.
 b. Un módulo para determinar la relación docente-alumno (esa relación se obtiene del cociente entre la
 cantidad de alumnos y la cantidad de docentes).
 
-PREGUNTAR POR QUE NO ME DEJA PONER 99999 Y COMO SOLUCIONARLO  
 
 
 program ejercicio_3;
+
 type 
-  escuelas= record 
+  escuelas = record 
     cue: integer;
     nombre: string;
     cant_doc: integer;
     cant_alu: integer;
     localidad: string;
   end;
-procedure leer (var e:escuelas);
-  begin 
-    write('ingrese el cue: ');
-    readln(e.cue);
-    write('ingrese el nombre de la escuela: ');
-    readln(e.nombre);
-    write('ingrese la cantidad de docentes: ');
-    readln(e.cant_doc);
-    write('ingrese la cantidad de alumnos: ');
-    readln(e.cant_alu);
-    write('ingrese la localidad: ');
-    readln(e.localidad);
-  end;
-procedure relacion_doc_alu (var cant:integer;var cue1,cue2:integer;var nombre1,nombre2:string;var relacion1,relacion2:integer;e:escuelas);
-  var 
-  cociente:integer;
+
+procedure leer(var e: escuelas);
+begin 
+  write('Ingrese el cue: ');
+  readln(e.cue);
+  write('Ingrese el nombre de la escuela: ');
+  readln(e.nombre);
+  write('Ingrese la cantidad de docentes: ');
+  readln(e.cant_doc);
+  write('Ingrese la cantidad de alumnos: ');
+  readln(e.cant_alu);
+  write('Ingrese la localidad: ');
+  readln(e.localidad);
+end;
+
+procedure relacion_doc_alu(var cant, cue1, cue2: integer; var nombre1, nombre2: string; var relacion1, relacion2: real; e: escuelas);
+var 
+  cociente: integer;
+begin
+  if (e.cant_doc <> 0) then
   begin
-    cociente:= e.cant_alu div e.cant_doc;
-    if (cociente > 23435)then begin 
-      if (e.localidad = 'la plata')then begin
-        cant:=cant+1;
+    cociente := e.cant_alu div e.cant_doc;
+    if (cociente > 23.435) then 
+    begin 
+      if (e.localidad = 'la plata') then 
+      begin
+        cant := cant + 1;
       end;
     end
-    else begin 
-      if (cociente < relacion1)then begin
-        cue2:=cue1;
-        nombre2:=nombre1;
-        relacion2:=relacion1;
-        relacion1:=cociente;
-        nombre1 :=e.nombre;
-        cue1:= e.cue;
+    else 
+    begin 
+      if (cociente < relacion1) then 
+      begin
+        cue2 := cue1;
+        nombre2 := nombre1;
+        relacion2 := relacion1;
+        relacion1 := cociente;
+        nombre1 := e.nombre;
+        cue1 := e.cue;
       end
-      else begin 
-        if (cociente < relacion2)then begin
-          relacion2:=cociente;
-          cue2:=e.cue;
-          nombre2:=e.nombre;
+      else 
+      begin 
+        if (cociente < relacion2) then 
+        begin
+          relacion2 := cociente;
+          cue2 := e.cue;
+          nombre2 := e.nombre;
         end;
       end;
     end;
   end;
+end;
+
 var 
-  e:escuelas;
-  cant,cue1,cue2,nombre1,nombre2,relacion1,relacion2,i: integer;
+  e: escuelas;
+  cant, cue1, cue2, i: integer;
+  nombre1, nombre2: string;
+  relacion1, relacion2: real;
+
 begin
-  cant:=0;
-  relacion1:=9999; {preguntar por que no me deja poner 99999 y como solucionarlo}
-  relacion2:=9999;
-  for i := 1 to 2400 do begin 
+  cant := 0;
+  relacion1 := 999.999; 
+  relacion2 := 999.999;
+  
+  for i := 1 to 9300 do 
+  begin 
     leer(e);
-    relacion_doc_alu(cant,cue1,cue2,nombre1,nombre2,relacion1,relacion2,e);
+    relacion_doc_alu(cant, cue1, cue2, nombre1, nombre2, relacion1, relacion2, e);
   end;
+  writeln('la cantidad de escuelas de la plata con relacion de alumno por docente es mayor a 23435: ',cant);
+  writeln('las escuelas con mejores relaciones alumno docente son: ',cue1,' ',nombre1,' y ',cue2,' ',nombre2);
 end.
