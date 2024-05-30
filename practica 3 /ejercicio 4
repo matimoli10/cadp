@@ -10,6 +10,7 @@ facturar del cliente.
 Nota: para realizar los cálculos tener en cuenta que cada minuto cuesta $3,40 y cada MB consumido cuesta
 $1,35.
 
+
 program ejercicio_4;
 type
   lineas = record
@@ -19,6 +20,47 @@ type
   end;
   planes = record 
     cod: integer;
-    cant_lineas: lineas;
+    cant_lineas: integer;
   end;
-
+procedure leer_linea(var l:lineas);
+  begin
+    write('escribi el numero de telefono');
+    readln(l.cel);
+    write('escribi la cantidad de minutos que estubo en llamada');
+    readln(l.cant_minuts);
+    write('escribi la cantidad de megabytes gastados');
+    readln(l.cant_mbytes);
+  end;
+procedure leer(var p:planes;var l:lineas;total_minutos,total_mbytes:integer);
+  var 
+    repite: integer;
+  begin 
+    write('escribi el codigo del telefono ');
+    readln(p.cod);
+    write('escribi la cantidad de lineas ');
+    readln(p.cant_lineas);
+    repite:=p.cant_lineas;
+    for repite:= 1 to repite do begin
+      leer_linea(l);
+      total_minutos:=total_minutos+l.cant_minuts;
+      total_mbytes:=total_mbytes+l.cant_mbytes;
+    end;
+    writeln('cantidad total de minutos es: ',total_minutos);
+    writeln('cantidad de megabytes es: ',total_mbytes);
+  end;
+var 
+  l:lineas;
+  p:planes;
+  total_minutos,total_mbytes,i:integer;
+  monto_total:real;
+begin
+  for i := 1 to 3 do begin 
+    total_minutos:=0;
+    total_mbytes:=0;
+    monto_total:=0;
+    leer(p,l,total_minutos,total_mbytes);
+    monto_total:=total_minutos* 3.40;
+    monto_total:=total_mbytes* 1.35;
+    writeln('el monto total de la factura: ',monto_total);
+  end;
+end.
