@@ -1,0 +1,70 @@
+5. Realizar un programa que lea información de autos que están a la venta en una concesionaria. De cada auto se
+lee: marca, modelo y precio. La lectura finaliza cuando se ingresa la marca “ZZZ” que no debe procesarse. La
+información se ingresa ordenada por marca. Se pide calcular e informar:
+a. El precio promedio por marca.
+b. Marca y modelo del auto más caro.
+
+
+
+program ejercicio_5;
+type 
+  autos = record
+    marca: string; 
+    modelo: string;
+    precio: real;
+  end;
+procedure leer(var a:autos);
+  begin
+    writeln('escriba la marca del auto: ');
+    readln(a.marca);
+    if(a.marca <> 'zzz')then begin 
+      writeln('escriba el modelo del auto: ');
+      readln(a.modelo);
+      writeln('escribi el precio del auto: ');
+      readln(a.precio);
+    end;
+  end;
+procedure suma(a:autos;var precio_total:real;var cant:integer;var marca_act:string);
+  var 
+  prom:real;
+  begin
+    if(a.marca = marca_act)then begin
+      precio_total:=precio_total+a.precio;
+      cant:=cant+1;
+    end
+    else begin
+      prom:= precio_total / cant;
+      writeln(' el precio promedio de',marca_act,' es: ',prom);
+    end;
+  end;
+procedure mas_caro(a:autos;var marca1,modelo1:string;var precio_max:real);
+  begin
+    if(a.precio > precio_max)then begin 
+      marca1:=a.marca;
+      modelo1:=a.modelo;
+      precio_max:=a.precio;
+    end;
+  end;
+var 
+  a:autos;
+  marca_act,marca1,modelo1:string;
+  precio_max,precio_total: real;
+  cant:integer;
+begin
+  precio_total:=0;
+  cant:=0;
+  leer(a);
+  marca_act:=a.marca;
+  precio_max:=0;
+  while(a.marca <> 'zzz')do begin 
+    suma(a,precio_total,cant,marca_act);
+    if (a.marca <> marca_act)then begin
+      marca_act:=a.marca;
+      precio_total:=0;
+      cant:=0;
+    end;
+    mas_caro(a,marca1,modelo1,precio_max);
+    leer(a);
+  end;
+  write('el auto mas caro es: ',marca1,' ',modelo1,' con un precio de: ',precio_max);
+end.
