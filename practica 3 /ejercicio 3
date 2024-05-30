@@ -11,3 +11,68 @@ a. Un módulo para la lectura de la información de la escuela.
 b. Un módulo para determinar la relación docente-alumno (esa relación se obtiene del cociente entre la
 cantidad de alumnos y la cantidad de docentes).
 
+PREGUNTAR POR QUE NO ME DEJA PONER 99999 Y COMO SOLUCIONARLO  
+
+
+program ejercicio_3;
+type 
+  escuelas= record 
+    cue: integer;
+    nombre: string;
+    cant_doc: integer;
+    cant_alu: integer;
+    localidad: string;
+  end;
+procedure leer (var e:escuelas);
+  begin 
+    write('ingrese el cue: ');
+    readln(e.cue);
+    write('ingrese el nombre de la escuela: ');
+    readln(e.nombre);
+    write('ingrese la cantidad de docentes: ');
+    readln(e.cant_doc);
+    write('ingrese la cantidad de alumnos: ');
+    readln(e.cant_alu);
+    write('ingrese la localidad: ');
+    readln(e.localidad);
+  end;
+procedure relacion_doc_alu (var cant:integer;var cue1,cue2:integer;var nombre1,nombre2:string;var relacion1,relacion2:integer;e:escuelas);
+  var 
+  cociente:integer;
+  begin
+    cociente:= e.cant_alu div e.cant_doc;
+    if (cociente > 23435)then begin 
+      if (e.localidad = 'la plata')then begin
+        cant:=cant+1;
+      end;
+    end
+    else begin 
+      if (cociente < relacion1)then begin
+        cue2:=cue1;
+        nombre2:=nombre1;
+        relacion2:=relacion1;
+        relacion1:=cociente;
+        nombre1 :=e.nombre;
+        cue1:= e.cue;
+      end
+      else begin 
+        if (cociente < relacion2)then begin
+          relacion2:=cociente;
+          cue2:=e.cue;
+          nombre2:=e.nombre;
+        end;
+      end;
+    end;
+  end;
+var 
+  e:escuelas;
+  cant,cue1,cue2,nombre1,nombre2,relacion1,relacion2,i: integer;
+begin
+  cant:=0;
+  relacion1:=9999; {preguntar por que no me deja poner 99999 y como solucionarlo}
+  relacion2:=9999;
+  for i := 1 to 4 do begin 
+    leer(e);
+    relacion_doc_alu(cant,cue1,cue2,nombre1,nombre2,relacion1,relacion2,e);
+  end;
+end.
