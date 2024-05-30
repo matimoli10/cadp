@@ -71,7 +71,7 @@ begin
   cant:=0;
   relacion1:=9999; {preguntar por que no me deja poner 99999 y como solucionarlo}
   relacion2:=9999;
-  for i := 1 to 4 do begin 
+  for i := 1 to 2400 do begin 
     leer(e);
     relacion_doc_alu(cant,cue1,cue2,nombre1,nombre2,relacion1,relacion2,e);
   end;
