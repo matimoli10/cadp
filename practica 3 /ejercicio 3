@@ -87,7 +87,7 @@ begin
   relacion1 := 999.999; 
   relacion2 := 999.999;
   
-  for i := 1 to 9300 do 
+  for i := 1 to 2400 do 
   begin 
     leer(e);
     relacion_doc_alu(cant, cue1, cue2, nombre1, nombre2, relacion1, relacion2, e);
