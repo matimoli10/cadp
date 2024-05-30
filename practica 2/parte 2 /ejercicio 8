@@ -2,7 +2,7 @@
 llega el número 123456, el cual no debe procesarse. Informar en pantalla para cada número la suma de sus
 dígitos pares y la cantidad de dígitos impares que posee.
 
-  PREGUNTAR EN CLASE: por que no me lo toma con rl valor que devaria al ingresar 6 numeros 
+  PREGUNTAR EN CLASE: por que no me lo toma con el valor que devaria al ingresar 6 numeros 
 
 program ejercicio8;
   procedure cantidad (num:integer;var suma_pares:integer;var cant_impares:integer);
