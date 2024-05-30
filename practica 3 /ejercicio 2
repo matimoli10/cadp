@@ -1,0 +1,76 @@
+El registro civil de La Plata ha solicitado un programa para analizar la distribución de casamientos durante el
+año 2019. Para ello, cuenta con información de las fechas de todos los casamientos realizados durante ese
+año.
+a. Analizar y definir un tipo de dato adecuado para almacenar la información de la fecha de cada
+casamiento.
+b. Implementar un módulo que lea una fecha desde teclado y la retorne en un parámetro cuyo tipo es el
+definido en el inciso a.
+c. Implementar un programa que lea la fecha de todos los casamientos realizados en 2019. La lectura
+finaliza al ingresar el año 2020, que no debe procesarse, e informe la cantidad de casamientos
+realizados durante los meses de verano (enero, febrero y marzo) y la cantidad de casamientos
+realizados en los primeros 10 días de cada mes. Nota: utilizar el módulo realizado en b) para la lectura
+de fecha.
+
+
+a) para abordar este roblea vamos a utilizar un registro.
+
+PREGUNTAR POR QUE ME TIRA ERROR CON LA DECLARACION DE MESES Y DIAS 
+
+program ejercicio_2;
+type
+ {meses = 1...12;
+ dias = 1...31;}
+ fechas = record
+   dia: integer    {dias};  
+   mes: integer    {meses};
+   year: integer;
+ end;
+procedure leer (var f:fechas);
+  begin
+    write('ingrese en año: ');
+    readln(f.year);
+    if (f.year = 2019)then begin 
+      write('ingrese el dia: ');
+      readln(f.dia);
+      write('ingrese el mes: ');
+      readln(f.mes);
+    end;
+  end;
+procedure verano(var cant:integer;f:fechas);
+  begin 
+    if(f.mes = 1)then begin 
+      cant:=cant+1;
+    end
+    else begin
+      if (f.mes = 2)then begin 
+        cant:=cant+1;
+      end
+      else begin
+        if(f.mes = 3)then begin 
+          cant:=cant+1;
+        end;
+      end;
+    end;
+  end;
+procedure primeros_10_dias(var cant2: integer;f:fechas);
+  begin
+    if(f.dia <= 10)then begin 
+      cant2:=cant2+1;
+    end;
+  end;
+var 
+  f:fechas;
+  cant:integer;
+  cant2:integer;
+begin
+  cant:=0;
+  cant2:=0;
+  leer(f);
+  while (f.year <> 2020) do begin 
+    verano(cant,f);
+    primeros_10_dias(cant2,f);
+    leer(f);
+  end;
+  writeln('la cantidad de casamientos en verano (enero,febrero,marzo) son: ',cant);
+  writeln('la cantidad de casamientos en los primeros 10 dias de cada mes es: ',cant2);
+end.
