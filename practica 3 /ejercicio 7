@@ -1,0 +1,92 @@
+7. Realizar un programa que lea información de centros de investigación de Universidades Nacionales. De cada
+centro se lee su nombre abreviado (ej. LIDI, LIFIA, LINTI), la universidad a la que pertenece, la cantidad de
+investigadores y la cantidad de becarios que poseen. La información se lee de forma consecutiva por
+universidad y la lectura finaliza al leer un centro con 0 investigadores, que no debe procesarse. Informar:
+● Cantidad total de centros para cada universidad.
+● Universidad con mayor cantidad de investigadores en sus centros.
+● Los dos centros con menor cantidad de becarios.
+
+
+program ejercicio_7;
+type
+  centros = record
+    centro: string;
+    universidad: string;
+    cant_investigadores: integer;
+    cant_becarios: integer;
+  end;
+  
+procedure ingresar (var c:centros);
+  begin 
+    writeln('ingrese la cantidad de investigadores: ');
+    readln(c.cant_investigadores);
+    if(c.cant_investigadores <> 0)then begin 
+      writeln('ingrese el centro: ');
+      readln(c.centro);
+      writeln('ingrese a que universidad pertenece: ');
+      readln(c.universidad);
+      writeln('ingrese la cantidad de becarios: ');
+      readln(c.cant_becarios);
+    end;
+  end;
+
+procedure leer (c:centros;var total_investigadores,total_centros,menor1,menor2:integer;var centro1,centro2:string);
+  begin 
+    total_centros:=total_centros+1;
+    total_investigadores:=total_investigadores+c.cant_investigadores;
+    if(c.cant_becarios<menor1)then begin 
+      menor2:=menor1;
+      centro2:=centro1;
+      centro1:=c.centro;
+      menor1:=c.cant_becarios;
+    end
+    else begin 
+      if(c.cant_becarios<menor2)then begin 
+        menor2:=c.cant_becarios;
+        centro2:=c.centro;
+      end;
+    end;
+  
+  end;
+var 
+  c:centros;
+  total_investigadores,total_centros,menor1,menor2,max_investigadores: integer;
+  centro1,centro2,uni,uni_act: string;
+begin 
+  total_investigadores:=0;
+  total_centros:=0;
+  menor1:=9999;
+  menor2:=9999;
+  max_investigadores:=0;
+  ingresar(c);
+  uni_act:=c.universidad;
+  while (c.cant_investigadores<>0)do begin 
+    if(uni_act = c.universidad)then begin 
+      leer(c,total_investigadores,total_centros,menor1,menor2,centro1,centro2);
+    end
+    else begin 
+      writeln('la cantidad total de centros para ',uni_act,' es: ',total_centros);
+      if (total_investigadores>max_investigadores)then begin 
+        max_investigadores:=total_investigadores;
+        uni:=uni_act;
+      end;
+      writeln('los dos centros con menor cantidad de becarios son: ',centro1,' y ',centro2);
+      total_investigadores:=0;
+      total_centros:=0;
+      menor1:=9999;
+      menor2:=9999;
+      uni_act:=c.universidad;
+      leer(c,total_investigadores,total_centros,menor1,menor2,centro1,centro2);
+    end;
+    ingresar(c);
+  end;
+  if(c.cant_investigadores=0)then begin
+    writeln('la cantidad total de centros para ',uni_act,' es: ',total_centros);
+    if (total_investigadores>max_investigadores)then begin 
+        max_investigadores:=total_investigadores;
+        uni:=uni_act;
+    end;
+    writeln('los dos centros con menor cantidad de becarios son: ',centro1,' y ',centro2);
+  end;
+  writeln('la universidad con mayor cantidad de investigadores en sus centros es: ',uni);
+end.
