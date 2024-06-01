@@ -33,20 +33,24 @@ type
     localidad : string;
   end;
   
-procedure datos_docente(var p:proyectos);
+procedure datos_docente(var p:proyectos{var c:cordinador});
   begin 
-    writeln('ingrese el dni: ');
+    writeln('ingrese el dni del docente: ');
+   {readln(c.dni);}
     readln(p.docente.dni);
-    writeln('ingrese el nombre: ');
+    writeln('ingrese el nombre del docente: ');
+   {readln(c.nombre);}
     readln(p.docente.nombre);
-    writeln('ingrese el apellido: ');
+    writeln('ingrese el apellido del docente: ');
+   {readln(c.apellido);}
     readln(p.docente.apellido);
-    writeln('ingrese el email: ');
+    writeln('ingrese el email del docente: ');
+   {readln(c.email);}
     readln(p.docente.email);
   end;
   
 procedure ingresar(var p:proyectos);
-  {var 
+ {var 
     c:cordinador;}
   begin  
     writeln('ingrese el codigo: ');
@@ -54,7 +58,6 @@ procedure ingresar(var p:proyectos);
     if (p.codigo<>-1)then begin 
       writeln('ingrese titulo: ');
       readln(p.titulo);
-      writeln('ingrese los datos del docente: ');
       datos_docente(p);
       writeln('ingrese la cantidad de alumnos: ');
       readln(p.cant_alumnos);
@@ -80,6 +83,7 @@ procedure mayor_cant (p:proyectos;var mayor1,mayor2:integer;var escuela1,escuela
       end;
     end;
   end;
+  
 function cumple(codigo:integer):boolean;
   var 
     pares:integer;
@@ -154,7 +158,6 @@ begin
       localidad_act:=p.localidad;
       leer(p,mayor1,mayor2,cant_total,cant_localidad,escuela1,escuela2,nom_titulo,escuela_act,localidad_act);
       escuela_act:=p.nombre_escuela;
-    
     end;
   end;
   writeln('las escuelas con mayor cantidad de alumnos participantes es: ',escuela1,' y ',escuela2);
