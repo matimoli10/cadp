@@ -1,0 +1,80 @@
+9. Realizar un programa que lea información de los candidatos ganadores de las últimas elecciones a intendente
+de la provincia de Buenos Aires. Para cada candidato se lee: localidad, apellido del candidato, cantidad de votos
+obtenidos y cantidad de votantes de la localidad. La lectura finaliza al leer la localidad ‘Zárate’, que debe
+procesarse. Informar:
+● El intendente que obtuvo la mayor cantidad de votos en la elección.
+● El intendente que obtuvo el mayor porcentaje de votos de la elección.
+
+
+
+program ejercicio_9;
+type
+  elecciones = record
+    localidad: string;
+    apellido_candidato: string;
+    cantidad_de_votos: integer;
+    cant_votanes: integer;
+  end;
+procedure ingresar2(var e:elecciones);
+  begin 
+    writeln('ingrese la localidad: ');
+    writeln('',e.localidad);
+    writeln('ingrese el apellido del candidato: ');
+    readln(e.apellido_candidato);
+    writeln('ingrese la cantidad de votos: ');
+    readln(e.cantidad_de_votos);
+    writeln('ingrese la cantidad de votantes: ');
+    writeln('',e.cant_votanes);
+  end;
+procedure ingresar(var e:elecciones);
+  begin 
+    writeln('ingrese la localidad: ');
+    readln(e.localidad);
+    writeln('ingrese el apellido del candidato: ');
+    readln(e.apellido_candidato);
+    writeln('ingrese la cantidad de votos: ');
+    readln(e.cantidad_de_votos);
+    writeln('ingrese la cantidad de votantes: ');
+    readln(e.cant_votanes);
+  end;
+procedure mayor_votos(e:elecciones;var mayor1:integer;var intendente:string);
+  begin 
+    if (mayor1 < e.cantidad_de_votos)then begin 
+      intendente:= e.apellido_candidato;
+      mayor1:= e.cantidad_de_votos;
+    end;
+  end;
+procedure porcentaje (e:elecciones; var mayor_porcentaje: real;var intendente2: string);
+  var 
+    prom: real;
+  begin 
+    prom:= e.cantidad_de_votos / e.cant_votanes;
+    if(prom > mayor_porcentaje)then begin 
+      intendente2:= e.apellido_candidato;
+      mayor_porcentaje := prom;
+    end;
+  end;
+var
+  e:elecciones;
+  mayor1,total,cant: integer;
+  intendente,intendente2: string;
+  mayor_porcentaje: real;
+begin 
+  mayor1:=0;
+  mayor_porcentaje:=0;
+  cant:=0;
+  repeat
+    ingresar(e);
+    total:=e.cant_votanes;
+    cant:=cant+e.cantidad_de_votos;
+    while (cant <> total )do begin 
+      mayor_votos(e,mayor1,intendente);
+      porcentaje(e,mayor_porcentaje,intendente2);
+      ingresar2(e);
+      cant:=cant+e.cantidad_de_votos;
+    end;
+    cant:=0;
+  until (e.localidad = 'zarate');
+  writeln('El intendente que obtuvo la mayor cantidad de votos en la elección es: ',intendente);
+  writeln('El intendente que obtuvo el mayor porcentaje de votos de la elección: ',intendente2);
+end.
