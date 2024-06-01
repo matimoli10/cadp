@@ -1,0 +1,87 @@
+6. Una empresa importadora de microprocesadores desea implementar un sistema de software para analizar la
+información de los productos que mantiene actualmente en stock. Para ello, se conoce la siguiente
+información de los microprocesadores: marca (Intel, AMD, NVidia, etc), línea (Xeon, Core i7, Opteron, Atom,
+Centrino, etc.), cantidad de cores o núcleos de procesamiento (1, 2, 4, 8), velocidad del reloj (medida en Ghz) y
+tamaño en nanómetros (nm) de los transistores (14, 22, 32, 45, etc.). La información de los microprocesadores
+se lee de forma consecutiva por marca de procesador y la lectura finaliza al ingresar un procesador con 0 cores
+(que no debe procesarse). Se pide implementar un programa que lea información de los microprocesadores
+de la empresa importadora e informe:
+● Marca y línea de todos los procesadores de más de 2 cores con transistores de a lo sumo 22 nm.
+● Las dos marcas con mayor cantidad de procesadores con transistores de 14 nm.
+● Cantidad de procesadores multicore (de más de un core) de Intel o AMD, cuyos relojes alcancen
+velocidades de al menos 2 Ghz.
+
+
+program ejercio_6;
+type
+  productos = record 
+    marca: string;
+    linea: string;
+    cores: integer;
+    velocidad: integer;
+    transistores: integer;
+  end;
+procedure ingresar(var p:productos);
+  begin 
+    writeln('ingrese cantidad de cores: ');
+    readln(p.cores);
+    if (p.cores <> 0)then begin 
+      writeln('ingrese la marca: ');
+      readln(p.marca);
+      writeln('ingrese la linea: ');
+      readln(p.linea);
+      writeln('ingrese la velocidad: ');
+      readln(p.velocidad);
+      writeln('ingrese el tamaño en nanometros de los transistores: ');
+      readln(p.transistores);
+    end;
+  end;
+procedure evaluo_transistores(p:productos;var marca1,marca2: string;var cant_cores1,cant_cores2:integer);
+  begin 
+    if (p.transistores <= 22)then begin 
+      if(p.cores > 2)then begin 
+        writeln('la marca del procesador que tiene mas de dos cores con a lo sumo 22 nanometros es: ',p.marca,' y la linea: ',p.linea);
+      end;
+    end;
+    if(p.transistores = 14)then begin 
+      if(p.cores > cant_cores1)then begin 
+        cant_cores2:=cant_cores1;
+        marca2:=marca1;
+        cant_cores1:=p.cores;
+        marca1:= p.marca;
+      end
+      else begin 
+        if(p.cores > cant_cores2)then begin
+          cant_cores2:=p.cores;
+          marca2:=p.marca;
+        end;
+      end;
+    end;
+  end;
+procedure leer(var p:productos;var marca1,marca2:string;var cant_cores1,cant_cores2,cant:integer);
+  begin 
+    while (p.cores <> 0)do begin 
+      evaluo_transistores(p,marca1,marca2,cant_cores1,cant_cores2);
+      if(p.marca = 'intel')or (p.marca = 'amd')then begin 
+        if (p.cores > 1)then begin 
+          if(p.velocidad > 2)then begin 
+            cant:=cant+1;
+          end;
+        end;
+      end;
+      ingresar(p);
+    end;
+  end;
+var 
+  p:productos;
+  marca1,marca2:string;
+  cant_cores1,cant_cores2,cant:integer;
+begin 
+  cant_cores1:=0;
+  cant_cores2:=0;
+  cant:=0;
+  ingresar(p);
+  leer(p,marca1,marca2,cant_cores1,cant_cores2,cant);
+  writeln('las dos marcas con mayor cantidad de cores con transistores de 14 nanometros es: ',marca1,' y ',marca2);
+  writeln('Cantidad de procesadores multicore de Intel o AMD, cuyos relojes alcancen velocidades de al menos 2 Ghz es: ',cant);
+end.
