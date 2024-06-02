@@ -1,0 +1,94 @@
+4. Se dispone de un vector con 100 números enteros. Implementar los siguientes módulos:
+a. posicion: dado un número X y el vector de números, retorna la posición del número X en dicho vector, o el valor -1 en caso de no encontrarse.
+b. intercambio: recibe dos valores x e y (entre 1 y 100) y el vector de números, y retorna el mismo vector donde se intercambiaron los valores de las posiciones x e y.
+c. sumaVector: retorna la suma de todos los elementos del vector.
+d. promedio: devuelve el valor promedio de los elementos del vector.
+e. elementoMaximo: retorna la posición del mayor elemento del vector.
+f. elementoMinimo: retorna la posicion del menor elemento del vector.
+
+
+program ejercicio_4;
+const
+  dimf= 100;
+type
+  vector=array[1...dimf]of integer;
+  
+procedure cargarvector (var v:vector);//se dispone 
+
+procedure posicion(v:vector;num:integer;var pos:integer);
+  var
+    i:integer
+  begin 
+    i:=1;
+    while(v[i] <> x) and (i <= dimf) do begin
+      i:= i + 1;
+    end;
+    if (v[i] = x)then begin 
+      pos:=i;
+    end
+    else begin 
+      pos:=-1;
+    end;
+  end;
+procedure intercambio(var v:vector;x:integer;y:integer);
+  var
+    aux:integer;
+  begin 
+    aux := v[x];
+    v[x] := v[y];
+    v[y] := aux;
+  end;
+procedure sumarvector(v:vector;var suma:integer);
+  var
+    i:integer;
+  begin 
+    for i:= 1 to dimf do begin
+      suma:= suma + v[i];
+    end;
+  end;
+procedure promedio(cant:dimf;suma:integer;var prom:integer;var cant:integer);
+  begin
+    prom:= suma div cant;
+    cant:= cant + 1;
+  end;
+procedure elementomaximo(v:vector;pos1:integer);
+  var 
+    max_valor,i:integer;
+  begin 
+    max_valor:=0;
+    for i:= 1 to dimf do begin 
+      if(max_valor < v[i])then begin
+        pos1:=i;
+        max_valor:=v[i];
+      end
+    end;
+  end;
+procedure elementominimo(v:vector;pos2:integer);
+  var 
+    min_valor,i:integer;
+  begin 
+    min_valor:=9999;
+    for i:= 1 to dimf do begin 
+      if(min_valor < v[i])then begin
+        pos2:=i;
+        min_valor:=v[i];
+      end
+    end;
+  end;
+var 
+  v:vector;
+  num,pos,x,y,suma,cant,prom,pos1,pos2:integer
+begin
+  suma:= 0;
+  cant:= 0;
+  prom:= 0;
+  readln(num);
+  posicion(v,num,pos);
+  readln(x);
+  readln(y);
+  intercambio(v,x,y);
+  sumarvector(v,suma,cant);
+  promedio(cant,suma,prom);
+  elementomaximo(v,pos1);
+  elementominimo(v,pos2);
+end.
