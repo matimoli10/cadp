@@ -1,0 +1,145 @@
+3. Se dispone de un vector con números enteros, de dimensión física dimF y dimensión lógica dimL.
+a. Realizar un módulo que imprima el vector desde la primera posición hasta la última.
+b. Realizar un módulo que imprima el vector desde la última posición hasta la primera.
+c. Realizar un módulo que imprima el vector desde la mitad (dimL DIV 2) hacia la primera posición, y
+desde la mitad más uno hacia la última posición.
+d. Realizar un módulo que reciba el vector, una posición X y otra posición Y, e imprima el vector desde
+la posición X hasta la Y. Asuma que tanto X como Y son menores o iguales a la dimensión lógica. Y
+considere que, dependiendo de los valores de X e Y, podría ser necesario recorrer hacia adelante o
+hacia atrás.
+e. Utilizando el módulo implementado en el inciso anterior, vuelva a realizar los incisos a, b y c.
+
+
+program ejercicio_3;
+const
+  dimf= ???;
+type
+  vector=array[1...dimf]of integer;
+procedure cargarvector (var v:vector;var diml:integer);//se dispone 
+procedure imprimirvector(v:vector;diml:integer);
+  var 
+    i:integer;
+  begin 
+    for i:= 1 to diml to begin
+      writeln(v[i]);
+    end;
+  end;
+procedure imprimirvector2(v:vector;diml:integer);
+  var 
+    i: integer;
+  begin 
+    for i := 1 downto diml to begin
+      writeln(v[i]);
+    end;
+  end;
+procedure imprimir_mitad(v:vector;diml:integer);
+  var
+    mitad,i: integer;
+  begin 
+    mitad:=diml div 2;
+    for i:= 1 downto mitad do begin
+      writeln(v[i]);
+    end;
+    mitad:= mitad + 1;
+    for i:= mitad to diml do begin
+      writeln(v[i]);
+    end;
+  end;
+procedure imprime_x_hasta_y(v:vector;x:integer;y:integer);
+  var 
+    z:integer;
+  begin 
+    if(x < y)then begin 
+      for z := x to y do begin
+        writeln(v[z]);
+      end;
+    end
+    else begin 
+      for z := x downto y do begin
+        writeln(v[z]);
+      end;
+    end;
+  end;
+procedure rehacer_insisos_a1(v:vector;x:integer;y:integer);
+  var 
+    i:integer;
+  begin 
+    for i:= x to y do begin 
+      writeln(v[i]);
+    end;
+  end;
+procedure rehacer_insisos_a2(v:vector;x:integer;y:integer);
+  var 
+    i:integer;
+  begin
+    for i:= y to x do begin
+      writeln(v[i]);
+    end;
+  end;
+procedure rehacer_insisos_b1(v:vector;x:integer;y:integer);
+  var 
+    i:integer;
+  begin 
+    for i:= x downto y do begin 
+      writeln(v[i]);
+    end;
+  end;
+procedure rehacer_insisos_b2(v:vector;x:integer;y:integer);
+  var 
+    i:integer;
+  begin 
+    for i:= y downto x do begin 
+      writeln(v[i]);
+    end;
+  end;
+procedure rehacer_insisos_c(v:vector;x:integer;y:integer);
+  var 
+    mitad,i:integer;
+  begin
+    if(x < y)then begin 
+      mitad: y div 2 ;
+      for i:= x downto mitad do begin
+        writeln(v[i]);
+      end;
+      mitad:= mitad + 1;
+      for i:= mitad to y do begin 
+        writeln(v[i]);
+      end;
+    end
+    else begin 
+      mitad:= x div 2
+      for i:= y downto mitad do begin
+        writeln(v[i]);
+      end;
+      mitad:=mitad+1;
+      for i:= mitad to x do begin 
+        writeln(v[i]);
+      end;
+    end;
+  end;
+procedure usando_modulo_anterior(v:vector;x:integer;y:integer);
+  begin 
+    if(x < y)then begin 
+      rehacer_insisos_a1(v,x,y);
+      rehacer_insisos_b1(v,x,y);
+      rehacer_insisos_c(v,x,y);
+    end
+    else begin 
+      rehacer_insisos_a2(v,x,y);
+      rehacer_insisos_b2(v,x,y);
+      rehacer_insisos_c(v,x,y);
+    end;
+  end;
+var 
+  v:vector;
+  x,y,dimf,diml:integer;
+begin
+  diml:=1
+  cargarvector(v,diml);
+  imprimirvector(v,diml);
+  imprimirvector2(v,diml);
+  readln(x);
+  readln(y);
+  imprime_x_hasta_y(v,x,y);
+  usando_modulo_anterior(v,x,y);
+end.
