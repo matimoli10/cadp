@@ -1,0 +1,25 @@
+6. Dado que en la solución anterior se recorre dos veces el vector (una para calcular el elemento máximo
+y otra para el mínimo), implementar un único módulo que recorra una única vez el vector y devuelva
+ambas posiciones.
+
+
+PONGO DIRECTAMENTE EL MODULO USADO EN EL CINCO YA QUE LO HICE PARA QUE RECORRA UNA VEZ
+
+
+procedure intercambio(var v:vector;diml:integer;var valor_max,valor_min:integer;var pos1,pos2:integer);
+  var 
+    i:integer;
+  begin
+    for i: 1 to diml do begin 
+      if(v[i] > valor_max)then begin
+        pos1:= i;
+        valor_max:= v[i];
+      end;
+      if(v[i] < valor_min)then begin 
+        pos2:=i;
+        valor_min:=0;
+      end;
+    end;
+    v[pos1]:= valor_min;
+    v[pos2]:= valor_max;
+  end;
