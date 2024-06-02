@@ -1,0 +1,77 @@
+10. Un centro de investigación de la UNLP está organizando la información de las 320 especies de plantas con
+las que trabajan. Para cada especie se ingresa su nombre científico, tiempo promedio de vida (en meses), tipo
+de planta (por ej. árbol, conífera, arbusto, helecho, musgo, etc.), clima (templado, continental, subtropical,
+desértico, etc.) y países en el mundo donde se las encuentra. La información de las plantas se ingresa ordenada
+por tipo de planta y, para cada planta, la lectura de países donde se las encuentra finaliza al ingresar el país 'zzz'.
+Al finalizar la lectura, informar:
+● El tipo de planta con menor cantidad de plantas.
+● El tiempo promedio de vida de las plantas de cada tipo.
+● El nombre científico de las dos plantas más longevas.
+● Los nombres de las plantas nativas de Argentina que se encuentran en regiones con clima subtropical.
+● El nombre de la planta que se encuentra en más países.
+
+
+program ejercicio_10;
+type
+  plantas=record
+    nom_citifico: string;
+    prom_vida: integer;
+    tipo_planta: string;
+    clima: string;
+    se_encuentra_pais: string;
+  end;
+procedure ingresar(var p:plantas;var cant:integer);
+  begin 
+    writeln('el pais en donde se encuentra: ');
+    readln(p.se_encuentra_pais);
+    if(p.se_encuentra_pais = 'zzz')then begin
+      writeln('nombre cientifico de la planta: ');
+      readln(p.nom_citifico);
+      writeln('npromedio de vida de la planta: ');
+      readln(p.prom_vida);
+      writeln('tipo de planta: ');
+      readln(p.tipo_planta);
+      writeln('clima en el que se encuentra: ');
+      readln(p.clima);
+    end;
+  end;
+procedure menor_cant_plantas(p:plantas,total_cant:integer;var menor_cant:integer;var tipo:string);
+  begin 
+    if (total_cant < menor_cant)then begin 
+      menor_cant:= total_cant;
+      tipo:=e.tipo_planta;
+    end;
+  end;
+procedure longevas (p:plantas;mas_longeva1,mas_longeva2:integer;nom1,nom2:string);
+  begin
+    if (p.prom_vida > mas_longeva1)then begin 
+      mas_longeva2:= mas_longeva1;
+      nom2:= nom1;
+      mas_longeva1:= p.prom_vida;
+      nom1:=p.nom_citifico;
+    end
+    else begin 
+      if (p.prom_vida > mas_longeva2)then begin 
+        mas_longeva2:= p.prom_vida;
+        nom1:= p.nom_citifico;
+      end;
+    end;
+  end;
+procedure argentina_subtropical(p:plantas);
+  begin 
+    if(p.se_encuentra_pais = 'argentina')then begin 
+      if(p.clima = 'subtropical')then begin 
+        writeln('el nombre de la planta nativa de argentina que se encuentras en regiones con clima tropical es: ',e.nom_citifico);
+      end;
+    end;
+  end;
+procedure mas_paises (p:plantas;cant,cant_max:integer;nombre2:string);
+  begin
+    if (cant>cant_max)then begin 
+      nombre2:= e.nom_citifico;
+      cant_max:=cant;
+    end;
+  end;
+var 
+  p:plantas;
+  
