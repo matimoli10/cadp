@@ -1,0 +1,52 @@
+5. Utilizando los módulos implementados en el ejercicio 4, realizar un programa que lea números enteros
+desde teclado (a lo sumo 100) y los almacene en un vector. La carga finaliza al leer el número 0. Al
+finalizar la carga, se debe intercambiar la posición del mayor elemento por la del menor elemento, e
+informe la operación realizada de la siguiente manera: “El elemento máximo ... que se encontraba en la
+posición ... fue intercambiado con el elemento mínimo ... que se encontraba en la posición ...”.
+
+
+program ejercicio_5;
+const
+  dimf = 100;
+type
+  vector= array [1...dimf] to integer;
+  
+procedure cargarvector(var v:vector;var diml:integer);
+  var
+    i:integer;
+  begin 
+    i:=1;
+    readln(v[i]);
+    while (i <= dimf) and (v[i]<>0) do begin 
+      i:= i + 1;
+      readln(v[i]);
+    end;
+    diml:=i;
+  end;
+procedure intercambio(var v:vector;diml:integer;var valor_max,valor_min:integer;var pos1,pos2:integer);
+  var 
+    i:integer;
+  begin
+    for i: 1 to diml do begin 
+      if(v[i] > valor_max)then begin
+        pos1:= i;
+        valor_max:= v[i];
+      end;
+      if(v[i] < valor_min)then begin 
+        pos2:=i;
+        valor_min:=0;
+      end;
+    end;
+    v[pos1]:= valor_min;
+    v[pos2]:= valor_max;
+  end;
+var 
+  v:vector;
+  diml,valor_max,valor_max,pos1,pos2:integer;
+begin
+  valor_max:=0;
+  valor_min:=9999;
+  cargarvector(v,diml);
+  intercambio(v,diml,valor_max,valor_min,pos1,pos2);
+  writeln('el elemento maximo ',valor_max,' que se encontraba en la posicion ',pos1,' fue intercambiado con el elemento minimo ',valor_min,' que se encontraba en la posicion ',pos2);
+end;
