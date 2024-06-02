@@ -20,14 +20,14 @@ type
     clima: string;
     se_encuentra_pais: string;
   end;
-procedure ingresar(var p:plantas;var cant:integer);
+procedure ingresar(var p:plantas);
   begin 
     writeln('el pais en donde se encuentra: ');
     readln(p.se_encuentra_pais);
-    if(p.se_encuentra_pais = 'zzz')then begin
+    if(p.se_encuentra_pais <> 'zzz')then begin
       writeln('nombre cientifico de la planta: ');
       readln(p.nom_citifico);
-      writeln('npromedio de vida de la planta: ');
+      writeln('promedio de vida de la planta: ');
       readln(p.prom_vida);
       writeln('tipo de planta: ');
       readln(p.tipo_planta);
@@ -35,14 +35,14 @@ procedure ingresar(var p:plantas;var cant:integer);
       readln(p.clima);
     end;
   end;
-procedure menor_cant_plantas(p:plantas,total_cant:integer;var menor_cant:integer;var tipo:string);
+procedure menor_cant_plantas(mismo_tipo:string;total_cant:integer;var menor_cant:integer;var tipo:string);
   begin 
     if (total_cant < menor_cant)then begin 
       menor_cant:= total_cant;
-      tipo:=e.tipo_planta;
+      tipo:= mismo_tipo;
     end;
   end;
-procedure longevas (p:plantas;mas_longeva1,mas_longeva2:integer;nom1,nom2:string);
+procedure longevas (p:plantas;var mas_longeva1,mas_longeva2:integer;var nom1,nom2:string);
   begin
     if (p.prom_vida > mas_longeva1)then begin 
       mas_longeva2:= mas_longeva1;
@@ -53,7 +53,7 @@ procedure longevas (p:plantas;mas_longeva1,mas_longeva2:integer;nom1,nom2:string
     else begin 
       if (p.prom_vida > mas_longeva2)then begin 
         mas_longeva2:= p.prom_vida;
-        nom1:= p.nom_citifico;
+        nom2:= p.nom_citifico;
       end;
     end;
   end;
@@ -61,17 +61,80 @@ procedure argentina_subtropical(p:plantas);
   begin 
     if(p.se_encuentra_pais = 'argentina')then begin 
       if(p.clima = 'subtropical')then begin 
-        writeln('el nombre de la planta nativa de argentina que se encuentras en regiones con clima tropical es: ',e.nom_citifico);
+        writeln('el nombre de la planta nativa de argentina que se encuentras en regiones con clima tropical es: ',p.nom_citifico);
       end;
     end;
   end;
-procedure mas_paises (p:plantas;cant,cant_max:integer;nombre2:string);
+procedure mas_paises (p:plantas;var cant,cant_max:integer;var nombre2:string);
   begin
     if (cant>cant_max)then begin 
-      nombre2:= e.nom_citifico;
+      nombre2:= p.nom_citifico;
       cant_max:=cant;
     end;
   end;
 var 
   p:plantas;
-  
+  cant,cant_max,mas_longeva1,mas_longeva2,menor_cant,total_cant,prom,cant_plantas,suma_prom_vida:integer;
+  tipo,mismo_tipo,nom1,nom2,nombre2: string;
+begin
+  cant_max:=0;
+  mas_longeva1:=0;
+  mas_longeva2:=0;
+  menor_cant:=9999;
+  total_cant:=0;
+  cant_plantas:=0;
+  suma_prom_vida:=0;
+  ingresar(p);
+  write ('cantidad de paises en donde se encuentra esta planta:');
+  readln(cant);
+  mismo_tipo:=p.tipo_planta;
+  while (p.se_encuentra_pais <> 'zzz')do begin
+    if (mismo_tipo = p.tipo_planta)then begin
+      while(cant <> 0)do begin 
+        total_cant:=total_cant + 1;
+        cant_plantas:=cant_plantas + 1;
+        suma_prom_vida:=suma_prom_vida+p.prom_vida;
+        longevas (p,mas_longeva1,mas_longeva2,nom1,nom2);
+        argentina_subtropical(p);
+        mas_paises(p,cant,cant_max,nombre2);
+        cant:=cant-1;
+        if (cant = 0)then begin 
+          writeln('  ');
+          writeln('termino de escribir los datos de la misma planta en cada pais que se encuentra');
+          writeln('ingrese la siguiente: ');
+        end;
+        ingresar(p);
+      end;
+      writeln('cantidad de paises en donde se encuentra esta planta:');
+      readln(cant);
+    end
+    else begin
+      menor_cant_plantas(mismo_tipo,total_cant,menor_cant,tipo);
+      prom:= suma_prom_vida div cant_plantas;
+      writeln('El tiempo promedio de vida de las plantas de este tipo: ',mismo_tipo,' es: ',prom);
+      cant_plantas:=0;
+      suma_prom_vida:=0;
+      total_cant:=0;
+      mismo_tipo:=p.tipo_planta;
+      total_cant:=total_cant + 1;
+      cant_plantas:=cant_plantas + 1;
+      suma_prom_vida:=suma_prom_vida+p.prom_vida;
+      longevas (p,mas_longeva1,mas_longeva2,nom1,nom2);
+      argentina_subtropical(p);
+      mas_paises(p,cant,cant_max,nombre2);
+      cant:=cant-1;
+      if (cant = 0)then begin 
+        writeln('  ');
+        writeln('termino de escribir los datos de la misma planta en cada pais que se encuentra');
+        writeln('ingrese la siguiente: ');
+      end;
+      ingresar(p);
+    end;
+  end;
+  menor_cant_plantas(mismo_tipo,total_cant,menor_cant,tipo);
+  writeln('El tipo de planta con menor cantidad de plantas es: ',tipo,'con una cantidad de: ',menor_cant);
+  prom:= suma_prom_vida div cant_plantas;
+  writeln('El tiempo promedio de vida de las plantas de este tipo: ',mismo_tipo,' es ',prom);
+  writeln('el nombre de las plantas mas longevas es: ',nom1,' y ',nom2);
+  writeln('El nombre de la planta que se encuentra en más países es: ',nombre2,' con una cantidad de: ',cant_max);
+end.
