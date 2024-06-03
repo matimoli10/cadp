@@ -4,7 +4,7 @@ de a lo sumo 400 alumnos. La lectura finaliza cuando se ingresa el DNI -1 (que n
 
 program ejercicio_9;
 const
-  dimf = 3;
+  dimf = 400;
 type
   rango = 1..dimf;
   alumno = record
