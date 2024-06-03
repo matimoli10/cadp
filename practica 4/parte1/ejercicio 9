@@ -18,22 +18,24 @@ type
   vector = array [rango] of alumno;
 procedure ingresar (var a:alumno);
   begin
-    writeln('ingrese el numero de inscripcion: ');
-    readln(a.numero_incripcion);
     writeln('ingrese el dni del alumno: ');
     readln(a.dni);
-    writeln('ingrese el apellido del alumno: ');
-    readln(a.apellido);
-    writeln('ingrese el nombre del alumno: ');
-    readln(a.nombre);
-    writeln('ingrese el año en el que nacio el alumno: ');
-    readln(a.year_nacimiento);
+    if(a.dni <> -1)then begin 
+      writeln('ingrese el numero de inscripcion: ');
+      readln(a.numero_incripcion);
+      writeln('ingrese el apellido del alumno: ');
+      readln(a.apellido);
+      writeln('ingrese el nombre del alumno: ');
+      readln(a.nombre);
+      writeln('ingrese el año en el que nacio el alumno: ');
+      readln(a.year_nacimiento);
+    end;
   end;
 procedure cargarvector(var v:vector;var diml:integer);
   var
     a:alumno;
   begin
-    ingresar(a)
+    ingresar(a);
     while(diml < dimf) and (a.dni <> -1) do begin
       v[diml]:= a;
       diml:= diml + 1;
