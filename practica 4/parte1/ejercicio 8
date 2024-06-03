@@ -7,7 +7,7 @@ b. Apellido y nombre de los dos alumnos de mayor edad.
 
 program ejercicio_8;
 const
-  dimf = 3;
+  dimf = 400;
 type
   rango = 1..dimf;
   alumno = record
