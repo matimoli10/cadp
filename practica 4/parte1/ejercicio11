@@ -1,0 +1,83 @@
+11. El colectivo de fotógrafos ArgenPics desea conocer los gustos de sus seguidores en las redes sociales.
+Para ello, para cada una de las 200 fotos publicadas en su página de Facebook, cuenta con la siguiente
+información: título de la foto, el autor de la foto, cantidad de Me gusta, cantidad de clics y cantidad de
+comentarios de usuarios. Realizar un programa que lea y almacene esta información. Una vez
+finalizada la lectura, el programa debe procesar los datos e informar:
+a. Título de la foto más vista (la que posee mayor cantidad de clics).
+b. Cantidad total de Me gusta recibidas a las fotos cuyo autor es el fotógrafo “Art Vandelay”.
+c. Cantidad de comentarios recibidos para cada una de las fotos publicadas en esa página.
+
+
+
+program ejercicio_11;
+const 
+  cant_fotos = 200;
+type
+  rango= 1..cant_fotos;
+  informacion = record
+    titulo: string;
+    autor: string;
+    cant_likes: integer;
+    cant_clics: integer;
+    cant_comentarios: integer
+  end;
+  publicaciones = array [rango] of informacion;
+procedure ingresar (var info:informacion);
+  begin 
+    writeln('ingrese el titulo');
+    readln(info.titulo);
+    writeln('ingrese el autor');
+    readln(info.autor);
+    writeln('ingrese la cantidad de likes');
+    readln(info.cant_likes);
+    writeln('ingrese la cantidad de clics en la publicacion');
+    readln(info.cant_clics);
+    writeln('ingrese la cantidad de comentarios');
+    readln(info.cant_comentarios);
+  end;
+procedure cargar_vector(var p:publicaciones);
+  var 
+    i:integer;
+    info:informacion;
+  begin 
+    for i := 1 to cant_fotos do begin 
+      ingresar(info);
+      p[i]:= info;
+    end;
+  end;
+procedure titulo_mas_vista(p:publicaciones;i:integer;var titulo1:string;var mas_vista:integer);
+  begin
+    if (p[i].cant_clics > mas_vista)then begin 
+      titulo1:=p[i].titulo;
+      mas_vista:=p[i].cant_clics;
+    end;
+  end;
+procedure autor_vandelay(p:publicaciones;i:integer;var total:integer);
+  begin
+    if(p[i].autor = 'art vandelay')then begin 
+      total:=total+p[i].cant_likes;
+    end;
+  end;
+procedure recorrer_vector(p:publicaciones;var total:integer;var titulo1:string);
+  var
+    i:integer;
+    mas_vista:integer;
+  begin 
+    mas_vista:=0;
+    for i:= 1 to cant_fotos do begin
+      titulo_mas_vista(p,i,titulo1,mas_vista);
+      autor_vandelay(p,i,total);
+      writeln('cantidad de comentarios recibidos para esta publicacion: ',i,' es: ',p[i].cant_comentarios);
+    end;
+  end;
+var 
+  p:publicaciones;
+  total:integer;
+  titulo1:string;
+begin
+  total:=0;
+  cargar_vector(p);
+  recorrer_vector(p,total,titulo1);
+  writeln('el titulo con mas vistas es: ',titulo1);
+  writeln('la cantidad total de likes recibidos en las fotos tomadas por el fotografo art vandelay es: ',total);
+end.
