@@ -25,20 +25,22 @@ procedure cargarvector(var v:vector;var diml:integer);
       writeln('escriba el salario del empleado: ',diml);
       readln(salario);
     end;
-    if (diml = dimf)and(salario <> -1)then begin
+    if(salario = 0)then begin
+      diml:=diml - 1;
+    end;
+    if (diml = dimf)and(salario <> 0)then begin
       v[diml]:= salario;
     end;
   end;
-procedure inc_y_prom(var v:vector;i:integer;x:real);
+procedure incremento_salario(var v:vector;i:integer;x:real);
   begin
     v[i]:=v[i] * x;
-    writeln(v[i]);
   end;
 procedure sumar(v:vector;i:integer;var suma:real);
   begin
     suma:=suma + v[i];
   end;
-procedure recorrer_vector(var v:vector,diml:integer,x:real,var prom: real);
+procedure recorrer_vector(var v:vector;diml:integer;x:real;var prom: real);
   var 
     i:integer;
     suma:real;
