@@ -67,7 +67,7 @@ procedure recorrer_vector(p:publicaciones;var total:integer;var titulo1:string);
     for i:= 1 to cant_fotos do begin
       titulo_mas_vista(p,i,titulo1,mas_vista);
       autor_vandelay(p,i,total);
-      writeln('cantidad de comentarios recibidos para esta publicacion: ',i,' es: ',p[i].cant_comentarios);
+      writeln('cantidad de comentarios recibidos para la publicacion: ',i,' es: ',p[i].cant_comentarios);
     end;
   end;
 var 
