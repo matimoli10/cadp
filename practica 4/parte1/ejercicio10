@@ -9,7 +9,7 @@ b. Realizar un módulo que muestre en pantalla el sueldo promedio de los emplead
 
 program ejercicio_10;
 const
-  dimf = 3;
+  dimf = 300;
 type
   rango = 1..dimf;
   vector = array [rango] of real;
