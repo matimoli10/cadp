@@ -1,0 +1,118 @@
+9. Modificar la solución del punto anterior considerando que el programa lea y almacene la información
+de a lo sumo 400 alumnos. La lectura finaliza cuando se ingresa el DNI -1 (que no debe procesarse).
+
+
+program ejercicio_9;
+const
+  dimf = 3;
+type
+  rango = 1..dimf;
+  alumno = record
+    numero_incripcion: integer;
+    dni: integer;
+    apellido: string;
+    nombre: string;
+    year_nacimiento: integer;
+  end;
+  
+  vector = array [rango] of alumno;
+procedure ingresar (var a:alumno);
+  begin
+    writeln('ingrese el numero de inscripcion: ');
+    readln(a.numero_incripcion);
+    writeln('ingrese el dni del alumno: ');
+    readln(a.dni);
+    writeln('ingrese el apellido del alumno: ');
+    readln(a.apellido);
+    writeln('ingrese el nombre del alumno: ');
+    readln(a.nombre);
+    writeln('ingrese el año en el que nacio el alumno: ');
+    readln(a.year_nacimiento);
+  end;
+procedure cargarvector(var v:vector;var diml:integer);
+  var
+    a:alumno;
+  begin
+    ingresar(a)
+    while(diml < dimf) and (a.dni <> -1) do begin
+      v[diml]:= a;
+      diml:= diml + 1;
+      ingresar(a);
+    end;
+    if (diml = dimf)and(a.dni <> -1)then begin
+      v[diml]:= a;
+    end;
+  end;
+function cumple(dni: integer): boolean;
+  var 
+    aux:integer;
+  begin 
+    while (dni<>0)do begin 
+      aux:= dni mod 10;
+      if(aux mod 2 = 0)then begin 
+        dni:= dni div 10;
+      end
+      else begin
+        cumple:= false;
+        dni:=0;
+      end;
+    end;
+    if(aux mod 2 = 0)then begin
+      cumple:=true;
+    end;
+  end;
+procedure dig_pares (v:vector;i:integer;var cant:integer);
+  begin
+    if (cumple(v[i].dni))then begin 
+      cant:=cant + 1;
+    end;
+  end;
+procedure mayor (v:vector;i:integer;var menor1,menor2:integer;var nom1,nom2,apellido1,apellido2: string);
+  begin 
+    if(v[i].year_nacimiento < menor1)then begin 
+      menor2:=menor1;
+      nom2:=nom1;
+      apellido2:=apellido1;
+      menor1:=v[i].year_nacimiento;
+      nom1:=v[i].nombre;
+      apellido1:=v[i].apellido;
+    end
+    else begin 
+      if(v[i].year_nacimiento < menor2)then begin 
+        menor2:=v[i].year_nacimiento;
+        nom2:=v[i].nombre;
+        apellido2:=v[i].apellido;
+      end
+    end;
+  end;
+procedure recorrer_vector(v:vector;diml:integer;var porcentaje:real;var nom1,nom2,apellido1,apellido2:string);
+  var
+    i,cant,menor1,menor2:integer;
+  begin 
+    cant:=0;
+    menor1:=9999;
+    menor2:=9999;
+    for i := 1 to diml do begin 
+      dig_pares(v,i,cant);
+      mayor(v,i,menor1,menor2,nom1,nom2,apellido1,apellido2);
+    end;
+    if(cant <> 0)then begin 
+      porcentaje := cant / dimf;
+      porcentaje :=porcentaje *100;
+    end
+    else begin
+      porcentaje:=0;
+    end;
+  end;
+var 
+  v:vector;
+  diml:integer;
+  porcentaje:real;
+  nom1,nom2,apellido1,apellido2: string;
+begin
+  diml:=0;
+  cargarvector(v,diml);
+  recorrer_vector(v,diml,porcentaje,nom1,nom2,apellido1,apellido2);
+  writeln('El porcentaje de alumnos con DNI compuesto sólo por dígitos pares es: ',porcentaje);
+  writeln('los alumnos de mayor edad son: ',nom1,' ',apellido1,' y ',nom2,' ',apellido2);
+end.
