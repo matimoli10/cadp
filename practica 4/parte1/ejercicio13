@@ -1,0 +1,89 @@
+13. El Grupo Intergubernamental de Expertos sobre el Cambio Climático de la ONU (IPCC) realiza todos los
+años mediciones de temperatura en 100 puntos diferentes del planeta y, para cada uno de estos
+lugares, obtiene un promedio anual. Este relevamiento se viene realizando desde hace 50 años, y con
+todos los datos recolectados, el IPCC se encuentra en condiciones de realizar análisis estadísticos.
+Realizar un programa que lea y almacene los datos correspondientes a las mediciones de los últimos
+50 años (la información se ingresa ordenada por año). Una vez finalizada la carga de la información,
+obtener:
+a. El año con mayor temperatura promedio a nivel mundial.
+b. El año con la mayor temperatura detectada en algún punto del planeta en los últimos 50 años.
+
+
+
+program ejercicio_13;
+const
+  dimf = 100;
+  dimf2 = 50;
+type 
+  rango = 1..dimf;
+  rango2 = 1..dimf2;
+  year = array [rango] of real;
+  cincuenta_years =array [rango2] of year;
+procedure promedio_anual (var y:year);
+  var 
+    z,x,dias:integer;
+    num,suma:real;
+  begin 
+    dias:= 365;
+    for x:= 1 to dimf do begin 
+      suma:=0;
+      for z:= 1 to dias do begin 
+        writeln('ingrese la medicion de temperatura del dia ');
+        readln(num);
+        suma:= suma + num;
+      end;  
+      y[x]:= suma / dias; 
+    end;
+  end;
+procedure cargo_50_year(var ys:cincuenta_years);
+  var
+    i:integer;
+    y:year;
+  begin
+    for i := 1 to dimf2 do begin 
+      promedio_anual(y);
+      ys[i]:= y ;
+    end;
+  end;
+procedure mayor_temperatura(ys:cincuenta_years;i,x:integer;var suma:real);
+  begin 
+    suma := suma + ys[i][x];
+  end;
+procedure mayor_temperatura_detectada(ys:cincuenta_years;i,x:integer;var mayor2:real;var year_mayor_temp_detectada:integer);
+  begin 
+    if(ys[i][x] > mayor2)then begin 
+      year_mayor_temp_detectada := i;
+      mayor2 := ys[i][x];
+    end;
+  end;
+procedure recorre_vector(ys:cincuenta_years;var year_mayor_temp_promedio:integer;var year_mayor_temp_detectada:integer);
+  var 
+    i,x:integer;
+    mayor1,mayor2,suma,prom:real;
+  begin 
+    mayor1:=0;
+    mayor2:=0;
+    for i := 1 to dimf2 do begin
+      suma := 0;
+      for x := 1 to dimf do begin 
+        mayor_temperatura(ys,i,x,suma);
+        mayor_temperatura_detectada(ys,i,x,mayor2,year_mayor_temp_detectada);
+      end;
+      prom := suma / dimf;
+      if (prom > mayor1) then begin 
+        year_mayor_temp_promedio:= i;
+        mayor1:= prom;
+      end;
+    end;
+  end;
+var 
+  ys:cincuenta_years;
+  year_mayor_temp_promedio,year_mayor_temp_detectada:integer;
+begin
+  year_mayor_temp_promedio:=0;
+  year_mayor_temp_detectada:=0;
+  cargo_50_year(ys);
+  recorre_vector(ys,year_mayor_temp_promedio,year_mayor_temp_detectada);
+  writeln('El año con mayor temperatura promedio a nivel mundial es: ',year_mayor_temp_promedio);
+  writeln('El año con la mayor temperatura detectada en 50 años es: ',year_mayor_temp_detectada);
+end.
