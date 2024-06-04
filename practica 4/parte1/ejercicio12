@@ -1,0 +1,143 @@
+12. En astrofísica, una galaxia se identifica por su nombre, su tipo (1. elíptica; 2. espiral; 3. lenticular; 4.
+irregular), su masa (medida en kg) y la distancia en pársecs (pc) medida desde la Tierra. La Unión
+Astronómica Internacional cuenta con datos correspondientes a las 53 galaxias que componen el
+Grupo Local. Realizar un programa que lea y almacene estos datos y, una vez finalizada la carga,
+informe:
+a. La cantidad de galaxias de cada tipo.
+b. La masa total acumulada de las 3 galaxias principales (la Vía Láctea, Andrómeda y Triángulo) y el
+porcentaje que esto representa respecto a la masa de todas las galaxias.
+c. La cantidad de galaxias no irregulares que se encuentran a menos de 1000 pc.
+d. El nombre de las dos galaxias con mayor masa y el de las dos galaxias con menor masa.
+
+
+
+program ejercicio_12;
+const
+  dimf = 5;
+  dimf2 = 4;
+type 
+  rango = 1..dimf;
+  tipos = 1..dimf2;
+  rango2 = tipos;
+  galaxia = record
+    nombre: string;
+    tipo: tipos;
+    masa: real;
+    distancia:real;
+  end;
+  galaxias = array [rango] of galaxia;
+  cant_galaxia_tipo = array [rango2] of integer;
+procedure inicializarvector(var cg:cant_galaxia_tipo);
+  var
+    i:integer;
+  begin 
+    for i := 1 to dimf2 do begin
+      cg[i]:=0;
+    end;
+  end;
+procedure ingresar(var gala:galaxia);
+  begin 
+    writeln('ingrese el nombre de la galaxia');
+    readln(gala.nombre);
+    writeln('ingrese el tipo de galaxia ');
+    readln(gala.tipo);
+    writeln('ingrese la masa de la galaxia en kg ');
+    readln(gala.masa);
+    writeln('ingrese la distancia en parsecs ');
+    readln(gala.distancia);
+  end;
+procedure cargarvector (var g:galaxias);
+  var
+    i:integer;
+    gala:galaxia;
+  begin 
+    for i := 1 to dimf do begin
+      ingresar(gala);
+      g[i]:= gala;
+    end;
+  end;
+procedure cant_cada_tipo(tipo:integer;var cg:cant_galaxia_tipo);
+  begin 
+    cg[tipo]:= cg[tipo] + 1;
+  end;
+procedure total_principales(nombre:string;masa:real;var total:real);
+  begin 
+    if (nombre = 'la via lactea') or (nombre = 'andromeda') or (nombre = 'triangulo')then begin
+      total:= total + masa;
+    end;
+    writeln(total);
+  end;
+procedure menos_de_1000_pc(tipo:real;distancia:real;var cant_menos_1000:real);
+  begin 
+    if(tipo <> 4)then begin 
+      if (distancia < 1000)then begin 
+        cant_menos_1000:= cant_menos_1000 + 1;
+      end;
+    end;
+  end;
+procedure mayor_y_menor_masa (nombre:string;masa:real;var mayor1,mayor2,menor1,menor2:real;var nom1,nom2,nom3,nom4:string);
+  begin 
+    if(masa > mayor1)then begin 
+      mayor2:=mayor1;
+      nom2:=nom1;
+      nom1:=nombre;
+      mayor1:=masa;
+    end
+    else begin 
+      if(masa > mayor2)then begin 
+        mayor2:=masa;
+        nom2:=nombre;
+      end;
+    end;
+    if(masa < menor1)then begin
+      menor2:= menor1;
+      nom4:= nom3;
+      menor1:= masa ;
+      nom3:= nombre;
+    end
+    else begin 
+      if( masa < menor2)then begin 
+        menor2:= masa;
+        nom4:= nombre;
+      end
+    end;
+  end;
+procedure recorrer_vector(g:galaxias;var cg:cant_galaxia_tipo;var total,porcentaje,cant_menos_1000:real;var nom1,nom2,nom3,nom4:string);
+  var
+    i:integer;
+    suma,mayor1,mayor2,menor1,menor2:real;
+  begin 
+    suma:=0;
+    mayor1:=0;
+    mayor2:=0;
+    menor1:=9999;
+    menor2:=9999;
+    for i:= 1 to dimf do begin
+      cant_cada_tipo(g[i].tipo,cg);
+      total_principales(g[i].nombre,g[i].masa,total);
+      suma:= suma + g[i].masa;
+      menos_de_1000_pc(g[i].tipo,g[i].distancia,cant_menos_1000);
+      mayor_y_menor_masa(g[i].nombre,g[i].masa,mayor1,mayor2,menor1,menor2,nom1,nom2,nom3,nom4);
+    end;
+    porcentaje:= total / suma;
+    porcentaje:= porcentaje * 100;
+  end;
+var 
+  g:galaxias;
+  cg:cant_galaxia_tipo;
+  total,cant_menos_1000,porcentaje:real;
+  nom1,nom2,nom3,nom4:string;
+  i:integer;
+begin 
+  total:=0;
+  cant_menos_1000:=0;
+  inicializarvector(cg);
+  cargarvector(g);
+  recorrer_vector(g,cg,total,porcentaje,cant_menos_1000,nom1,nom2,nom3,nom4);
+  for i := 1 to dimf2 do begin
+    writeln('La cantidad de galaxias del tipo ',i,' es: ',cg[i]);
+  end;
+  writeln('La masa total de las 3 galaxias principales (la Vía Láctea, Andrómeda y Triángulo) ',total,' y el porcentaje respecto a la masa de todas las galaxias es: ',porcentaje);
+  writeln('La cantidad de galaxias no irregulares que se encuentran a menos de 1000 pc',cant_menos_1000);
+  writeln('El nombre de las dos galaxias con mayor masa ',nom1,' y ',nom2,' y el de las dos galaxias con menor masa ',nom3,' y ',nom4);
+end.
