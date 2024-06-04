@@ -1,0 +1,108 @@
+14. El repositorio de código fuente más grande en la actualidad, GitHub, desea estimar el monto invertido
+en los proyectos que aloja. Para ello, dispone de una tabla con información de los desarrolladores que
+participan en un proyecto de software, junto al valor promedio que se paga por hora de trabajo:
+
+CÓDIGO        ROL DEL DESARROLLADOR           VALOR/HORA (USD)
+1               Analista Funcional              35,20
+2                Programador                    27,45
+3          Administrador de bases de datos      31,03
+4             Arquitecto de software            44,28
+5        Administrador de redes y seguridad     39,87
+
+Nota: los valores/hora se incluyen a modo de ejemplo
+
+Realizar un programa que procese la información de los desarrolladores que participaron en los 1000
+proyectos de software más activos durante el año 2017. De cada participante se conoce su país de
+residencia, código de proyecto (1 a 1000), el nombre del proyecto en el que participó, el rol que cumplió
+en dicho proyecto (1 a 5) y la cantidad de horas trabajadas. La lectura finaliza al ingresar el código de
+proyecto -1, que no debe procesarse. Al finalizar la lectura, el programa debe informar:
+a. El monto total invertido en desarrolladores con residencia en Argentina.
+b. La cantidad total de horas trabajadas por Administradores de bases de datos.
+c. El código del proyecto con menor monto invertido.
+d. La cantidad de Arquitectos de software de cada proyecto.
+
+
+
+program ejercicio_14;
+const
+  dimf=1000;
+
+type
+  rango = 1..dimf;
+  rango2 = 1..5;
+  tabla = array [rango2] of real;
+  participante = record 
+    pais: string;
+    cod : integer;
+    nom_proyecto: string;
+    rol: rango2;
+    cant_horas: integer;
+  end;
+procedure cargar_tabla (var t:tabla); // se dispone
+  begin 
+  
+  end;
+procedure ingresar (var p:participante);
+  begin
+    writeln('ingrese el proyecto ');
+    readln(p.cod);
+    if(p.cod <> -1 )then begin 
+      writeln('ingrese el pais ');
+      readln(p.pais);
+      writeln('ingrese el nombre del proyecto ');
+      readln(p.nom_proyecto);
+      writeln('ingrese el rol que cumplio ');
+      readln(p.rol);
+      writeln('ingrese la cantidad de horas ');
+      readln(p.cant_horas);
+    end;
+  end;
+procedure monto_total_y_menor_invertido (cant_horas:integer;pais:string;rol:rango2;cod:integer;t:tabla;var total,menor1:real;var cod1:integer);
+  var
+    valor_hora: real;
+  begin 
+    valor_hora:= cant_horas * t[rol];
+    if(pais = 'argentina')then begin 
+      total:= total + valor_hora;
+    end;
+    if (valor_hora < menor1)then begin 
+      cod1 := cod;
+      menor1 := valor_hora;
+    end;
+  end;
+procedure cant_total_horas (cant_horas:integer;rol:rango2;var total_horas:integer);
+  begin 
+    if (rol = 3 )then begin 
+      total_horas:= total_horas + cant_horas;
+    end;
+  end;
+procedure cant_arquitectos(rol:rango2;var cant_arqui:integer);
+  begin 
+    if(rol = 4 )then begin 
+      cant_arqui:=cant_arqui + 1; 
+    end;
+  end;
+var 
+  t:tabla;
+  p:participante;
+  total,menor1:real;
+  cod1:rango;
+  total_horas,cant_arqui:integer;
+begin 
+  total := 0;
+  menor1 := 9999;
+  total_horas := 0; 
+  cant_arqui := 0;
+  cargar_tabla(t); //se dispone
+  ingresar (p);
+  while (p.cod <> -1) do begin 
+    monto_total_y_menor_invertido(p.cant_horas,p.pais,p.rol,p.cod,t,total,menor1,cod1);
+    cant_total_horas(p.cant_horas,p.rol,total_horas);
+    cant_arquitectos (p.rol,cant_arqui);
+    ingresar(p);
+  end;
+  writeln('El monto total invertido en desarrolladores con residencia en Argentina es: ',total);
+  writeln('La cantidad total de horas trabajadas por Administradores de bases de datos es: ',total_horas);
+  writeln('El código del proyecto con menor monto invertido es: ',cod1,' con un monto de ',menor1);
+  writeln('La cantidad de Arquitectos de software de cada proyecto es: ',cant_arqui);
+end.
