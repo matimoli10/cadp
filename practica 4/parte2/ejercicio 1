@@ -1,0 +1,75 @@
+1. a. Dado un vector de enteros de a lo sumo 500 valores, realice un módulo que reciba dicho vector y un valor
+n y retorne si n se encuentra en el vector o no.
+b. Modifique el módulo del inciso a. considerando ahora que el vector se encuentra ordenado de manera
+ascendente.
+
+
+a)
+program ejercicio_1;
+const 
+  dimf = 500;
+type
+  rango = 1..dimf;
+  vector = array [rango] of integer;
+procedure cargar_vector (var v:vector;var diml:integer); // se dispone
+  var 
+    i:integer;
+    num:integer;
+  begin 
+    read (num);
+    while (i < dimf) and (num <> 0)do begin 
+      v[i]:= num;
+      read(num);
+    end;
+    if(i = dimf)then begin 
+      v[i]:= num;
+    end;
+  end;
+function buscar (v:vector;n:integer,diml:integer): boolean;
+  var 
+    i:integer;
+  begin 
+    buscar := false;
+    for i: 1 to diml do begin
+      if (v[i] = n)then begin 
+        buscar:= true;
+        i:=diml;
+      end;
+    end;
+  end;
+
+
+
+b)
+program ejercicio_1;
+const 
+  dimf = 500;
+type
+  rango = 1..dimf;
+  vector = array [rango] of integer;
+procedure cargar_vector (var v:vector;var diml:integer); // se dispone
+  var 
+    i:integer;
+    num:integer;
+  begin 
+    read (num);
+    while (i < dimf) and (num <> 0)do begin 
+      v[i]:= num;
+      read(num);
+    end;
+    if(i = dimf)then begin 
+      v[i]:= num;
+    end;
+  end;
+function buscar (v:vector;n:integer,diml:integer): boolean;
+  var 
+    i:integer;
+  begin 
+    buscar := false;
+    while (i < diml) and (v[i] > n) do begin 
+      if (v[i] = n)then begin 
+        buscar:= true;
+        i:=diml;
+      end;
+    end;
+  end;
