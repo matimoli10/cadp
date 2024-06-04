@@ -1,0 +1,29 @@
+program ejercicio_1;
+const 
+  dimf = 500;
+type
+  rango = 1..dimf;
+  vector = array [rango] of string;
+  
+procedure cargar_vector (var v:vector;var diml:integer); // se dispone
+  var 
+    i:integer;
+    nombre:string;
+  begin 
+    writeln('carga el nombre del alumno ');
+    read (nombre);
+    while (i < dimf) and (nombre <> 'zzz')do begin 
+      v[i]:= nombre;
+      writeln('carga el nombre del alumno ');
+      read (nombre);
+    end;
+    if(i = dimf)then begin 
+      v[i]:= nombre;
+    end;
+  end;
+procedure eliminar_nombre(var v:vector;i,ant,sig:integer;nom:string);
+  begin
+    if (v[i] = nom) then begin 
+      
+    end;
+  end;
