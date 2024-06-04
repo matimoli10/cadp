@@ -1,4 +1,13 @@
-program ejercicio_1;
+2. Realice un programa que resuelva los siguientes incisos:
+a. Lea nombres de alumnos y los almacene en un vector de a lo sumo 500 elementos. La lectura finaliza
+cuando se lee el nombre ‘ZZZ’, que no debe procesarse.
+b. Lea un nombre y elimine la primera ocurrencia de dicho nombre en el vector.
+c. Lea un nombre y lo inserte en la posición 4 del vector.
+d. Lea un nombre y lo agregue al vector.
+Nota: Realizar todas las validaciones necesarias
+
+
+program ejercicio_2;
 const 
   dimf = 500;
 type
@@ -21,9 +30,35 @@ procedure cargar_vector (var v:vector;var diml:integer); // se dispone
       v[i]:= nombre;
     end;
   end;
-procedure eliminar_nombre(var v:vector;i,ant,sig:integer;nom:string);
+procedure eliminar_nombre(var v:vector;i,diml:integer;nom:string);
+  var 
+    z:integer;
   begin
     if (v[i] = nom) then begin 
-      
+      for z:= i to dimf-1 do begin 
+        v[i]:=v[i+1];
+      end;
+      v[diml]:=0;
+      diml := diml - 1;
+    end;
+  end;
+procedure insertar (var v:vector;i,diml:integer;nom:string);
+  var
+    z:integer;
+  begin 
+    if(i = 4)then begin 
+      if (diml+1 <= dimf) then begin
+        for z := i downto diml+1 do begin 
+          v[z]:= v[z-1];
+        end;
+        v[i]:= nom;
+      end;
+    end;
+  end;
+procedure agregar_al_vector(var v:vector;diml:integer;nom:string);
+  begin 
+    if (diml+1 <= dimf)then begin
+      diml:=diml+1;
+      v[diml]:=nom;
     end;
   end;
