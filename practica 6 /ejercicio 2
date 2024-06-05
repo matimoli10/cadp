@@ -1,0 +1,130 @@
+2. Dado el siguiente código que lee información de personas hasta que se ingresa la persona con dni 0 y
+luego imprime dicha información en el orden inverso al que fue leída, identificar los 9 errores.
+
+
+program ejercicio2;
+type
+  lista = ^nodo;
+  persona = record
+    dni: integer;
+    nombre: string;
+    apellido: string;
+  end;
+  nodo = record
+    dato: persona;
+    sig: lista;
+  end;
+procedure leerPersona(p: persona);
+  begin
+    read(p.dni);
+    if (p.dni <> 0)then begin
+      read(p.nombre);
+      read(p.apellido);
+    end;
+  end;
+{Agrega un nodo a la lista}
+procedure agregarAdelante(l:lista;p:persona);
+  var
+    aux: lista;
+  begin
+    aux^.dato:= p;
+    aux^.sig:= l;
+    l:= aux;
+  end;
+{Carga la lista hasta que llega el dni 0}
+procedure generarLista(var l:lista);
+  var
+    p:nodo;
+  begin
+    leerPersona(p);
+    while (p.dni <> 0) do begin
+      agregarAdelante(l,p);
+    end;
+  end;
+procedure imprimirInformacion(var l:lista);
+  begin
+    while (l <> nil) do begin
+      writeln('DNI: ', l^.dato.dni, 'Nombre:',
+      l^.nombre, 'Apellido:', l^.apellido);
+      l:= l^.sig;
+    end;
+  end;
+{Programa principal}
+var
+  l:lista;
+begin
+  generarLista(l);
+  imprimirInformacion(l);
+end.
+    end;
+  end;
+
+
+1) primer error es que en el procedure leerpersona no paso por var el ragistro p:persona
+2) en el agregar adelante no esta pasada por var la lista, por ende no se estarian cargando los registros
+3) dentro del agregar adelante nunca hace un new, para reservar un espacio para el dato a ingresar en la lista
+4) declara mal el tipo de la variable p, ya que le pone nodo y tendria que ponerle p:persona;
+5) en el procedimiento generarlista si llega a entrar al while queda en un boocle ya que faltaria dentro de este la instruccion de leerpersona(p)
+6) en el procedimiento imprimirinformacion tiene como error que pasa la lista como variable, usando l para moverse por la lista,generando que los valores por los que ya paso se pierdan de la lista y no se puedan volver a acceder
+7) a la hora de querer imprimer los datos de la lista tiene un error al llamar al dato especifico nombre, llamandolo para imprimer como: l^.nombre mientras que se espera que se lo llame como l^.dato.nombre
+8) a la hora de querer imprimer los datos de la lista tiene un error al llamar al dato especifico apellido, llamandolo para imprimer como: l^.apellido mientras que se espera que se lo llame como l^.dato.apellido
+9) en el programa principal no inicializa la lista en nil antes de empezar a cargarla
+
+resolviendo estor errores el codigo quedaria de la siguiente manera: 
+
+program ejercicio2;
+type
+  lista = ^nodo;
+  persona = record
+    dni: integer;
+    nombre: string;
+    apellido: string;
+  end;
+  nodo = record
+    dato: persona;
+    sig: lista;
+  end;
+procedure leerPersona(var p: persona);
+  begin
+    read(p.dni);
+    if (p.dni <> 0)then begin
+      read(p.nombre);
+      read(p.apellido);
+    end;
+  end;
+{Agrega un nodo a la lista}
+procedure agregarAdelante(var l:lista;p:persona);
+  var
+    aux: lista;
+  begin
+    new(aux);
+    aux^.dato:= p;
+    aux^.sig:= l;
+    l:= aux;
+  end;
+{Carga la lista hasta que llega el dni 0}
+procedure generarLista(var l:lista);
+  var
+    p:persona;
+  begin
+    leerPersona(p);
+    while (p.dni <> 0) do begin
+    agregarAdelante(l,p);
+    end;
+  end;
+procedure imprimirInformacion(l:lista);
+  begin
+    while (l <> nil) do begin
+      writeln('DNI: ', l^.dato.dni, 'Nombre:',
+      l^.dato.nombre, 'Apellido:', l^.dato.apellido);
+      l:= l^.sig;
+    end;
+  end;
+{Programa principal}
+var
+  l:lista;
+begin
+  l:= nil;
+  generarLista(l);
+  imprimirInformacion(l);
+end.
