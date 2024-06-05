@@ -1,0 +1,189 @@
+program ejercicio_5;
+const 
+  dimf = 500;
+type
+  rango = 1..dimf;
+  codigo = 1..2400;
+  dias = 1..31;
+  meses = 1..12;
+  categoria = 'a'..'f';
+  fecha = record
+    dia: dias;
+    mes: meses;
+    year: integer;
+  end;
+  clientes = record 
+    fecha_firma: fecha;
+    cat: categoria;
+    cod: codigo;
+    monto:real;
+  end;
+  vector = array [rango] of clientes;
+  vector_contador = array [categoria] of integer;
+  mayor_cliente = array [1..10] of integer;
+  mayores_cod = array [1..10] of integer; 
+  vector_codigo = array [codigo] of integer;
+
+procedure inicializar (var vc:vector_contador);
+  var
+    i:char;
+  begin 
+    for i := 'a' to 'f' do begin 
+      vc[i]:=0;
+    end;
+  end;
+procedure inicializar2(var vcod:vector_codigo);
+  var
+    i:integer;
+  begin 
+    for i := 1 to 2400 do begin 
+      vcod[i]:=0;
+    end;
+  end;
+procedure inicializar3 (var mc:mayor_cliente);
+  var
+    i:integer;
+  begin 
+    for i:= 1 to 10 do begin 
+      mc[i]:=0;
+    end;
+  end;
+procedure ingresar_fecha(var f :fecha);
+  begin 
+    writeln('escriba el dia ');
+    readln(f.dia);
+    writeln('escriba el mes ');
+    readln(f.mes);
+    writeln('escriba el año ');
+    readln(f.year);
+  end;
+procedure ingresar(var c:clientes);
+  var 
+    f:fecha;
+  begin
+    writeln('ingrese la fecha en el que firmo contrato');
+    ingresar_fecha(f);
+    writeln('ingrese la categoria');
+    readln(c.cat);
+    writeln('ingrese el codigo');
+    readln(c.cod);
+    writeln('ingrese el monto mensual acordado');
+    readln(c.monto);
+  end;
+procedure cargar_vector(var v:vector;var prom:real;var vcod:vector_codigo);
+  var 
+    c:clientes;
+    i:integer;
+    suma:real;
+  begin 
+    suma:=0;
+    for i := 1 to dimf do begin 
+      ingresar(c);
+      v[i]:= c;
+      suma:= suma + c.monto;
+      vcod[c.cod]:= vcod[c.cod] + 1;
+    end;
+    prom:= suma / dimf;
+  end;
+procedure cant_contratos(f:fecha;mes_act,year_act:integer;var cant_mes,cant_year:integer);
+  begin
+    if(f.year = year_act)then begin 
+      if (f.mes = mes_act)then begin
+        cant_mes:= cant_mes + 1;
+        cant_year:=cant_year + 1;
+      end
+      else begin 
+        writeln('la cantidad de contratos en ',mes_act,' del año ',year_act,' es: ',cant_mes);
+      end;
+    end  
+    else begin 
+      writeln('la cantidad de contratos en ',mes_act,' del año ',year_act,' es: ',cant_mes);
+      writeln('la cantidad de contratos en el año ',year_act,' es: ',cant_year);
+    end;
+  end;
+procedure para_cada_categoria(var vc:vector_contador;cat:categoria);
+  begin 
+    vc[cat]:= vc[cat] + 1;
+  end;
+procedure mayor_client (var mc:mayor_cliente;cod:codigo;vcod:vector_codigo; var mcod:mayores_cod);
+  var 
+    i,z:integer;
+  begin
+    i:=1;
+    while (i <= 10)and(mc[i] > vcod[cod])do begin
+      i:= i + 1;
+    end;
+    if(mc[i] < vcod[cod])then begin
+      for z:= i+1 downto 10 do begin 
+        mc[z]:= mc[z-1];
+        mcod[z]:=mcod[z-1];
+      end;
+      mc[i]:= vcod[cod];
+      mcod[i]:= cod;
+    end;
+  end;
+procedure superan(monto,prom:real;var cant:integer);
+  begin
+    if(monto > prom)then begin 
+      cant:= cant + 1;
+    end;
+  end;
+procedure recorrer_vector(v:vector;prom:real;var vc:vector_contador;var year_mayor,cant:integer;var mc:mayor_cliente; vcod:vector_codigo;var mcod:mayores_cod);
+  var
+    i,mes_act,year_act,cant_mes,cant_year,mayor_cant:integer;
+  begin
+    cant_mes:=0;
+    cant_year:=0;
+    mayor_cant:=0;
+    i:=1;
+    mes_act:= v[i].fecha_firma.mes;
+    year_act:= v[i].fecha_firma.year;
+    for i := 1 to dimf do begin 
+      cant_contratos(v[i].fecha_firma,mes_act,year_act,cant_mes,cant_year);
+      if(v[i].fecha_firma.year <> year_act)then begin
+        if(mayor_cant < cant_year)then begin 
+          year_mayor:=year_act;
+          mayor_cant := cant_year;
+        end;
+        year_act:=v[i].fecha_firma.year;
+        mes_act:=v[i].fecha_firma.mes;
+        cant_mes:=0;
+        cant_year:=0;
+        cant_contratos(v[i].fecha_firma,mes_act,year_act,cant_mes,cant_year);
+      end;
+      if(v[i].fecha_firma.mes <> mes_act)then begin 
+        mes_act:=v[i].fecha_firma.mes;
+        cant_mes:=0;
+        cant_contratos(v[i].fecha_firma,mes_act,year_act,cant_mes,cant_year);
+      end;
+      para_cada_categoria(vc,v[i].cat);
+      mayor_client(mc,v[i].cod,vcod,mcod);
+      superan(v[i].monto,prom,cant);
+    end;
+  end;
+var 
+  v:vector;
+  vc:vector_contador;
+  mc:mayor_cliente;
+  vcod:vector_codigo;
+  mcod: mayores_cod;
+  year_mayor,cant,i:integer;
+  prom: real;
+  z:char;
+begin
+  cant:=0;
+  inicializar(vc);
+  inicializar2(vcod);
+  inicializar3(mc);
+  cargar_vector(v,prom,vcod);
+  recorrer_vector(v,prom,vc,year_mayor,cant,mc,vcod,mcod);
+  writeln('año en el que se firmo la mayor cantidad de contratos fue: ',year_mayor);
+  for z := 'a' to 'f' do begin 
+    writeln('la cantidad de clientes para la categoria',z,' es: ',vc[z]);
+  end;
+  writeln('codigo de las 10 ciudades con mas cantidad de clientes ');
+  for i := 1 to 10 do begin
+    writeln(' el cod de la ciudad ',mcod[i],' tiene la cantidad de clientes: ',mc[i]);
+  end;
+  writeln('la cantidad de clientes que superan mensualmente el monto promedio entre todos los clientes es: ',cant);
+end.
