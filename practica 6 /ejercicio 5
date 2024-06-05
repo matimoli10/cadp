@@ -1,0 +1,134 @@
+5. Realizar un programa que lea y almacene la información de productos de un supermercado. De cada
+producto se lee: código, descripción, stock actual, stock mínimo y precio. La lectura finaliza cuando se
+ingresa el código -1, que no debe procesarse. Una vez leída y almacenada toda la información, calcular
+e informar:
+a. Porcentaje de productos con stock actual por debajo de su stock mínimo.
+b. Descripción de aquellos productos con código compuesto por al menos tres dígitos pares.
+c. Código de los dos productos más económicos.
+
+
+program ejercicio_5;
+type
+  producto = record 
+    codigo: integer;
+    descripcion: string;
+    stock_act: integer;
+    stock_minimo: integer;
+    precio: real;
+  end;
+  lista = ^nodo;
+  nodo = record 
+    dato: producto;
+    sig: lista;
+  end;
+procedure ingresar(var p:producto);
+  begin 
+    writeln('ingrese el codigo del producto');
+    readln(p.codigo);
+    if(p.codigo <> -1)then begin 
+      writeln('ingrese una descripcion');
+      readln(p.descripcion);
+      writeln('ingrese el stock actual del producto');
+      readln(p.stock_act);
+      writeln('ingrese el sock minimo del producto');
+      readln(p.stock_minimo);
+      writeln('ingrese el precio del producto');
+      readln(p.precio);
+    end;
+  end;
+procedure agregaratras(var l,ult:lista;p:producto);
+  var 
+    aux:lista;
+  begin 
+    new(aux);
+    aux^.dato:= p;
+    if(l = nil)then begin 
+      l:= aux;
+    end
+    else begin 
+      ult^.sig:=aux;
+    end;
+    ult:=aux;
+  end;
+procedure cargarlista (var l:lista);
+  var 
+    ult:lista;
+    p:producto;
+  begin 
+    ingresar(p);
+    while (p.codigo <> -1)do begin 
+      agregaratras(l,ult,p);
+      ingresar(p);
+    end;
+  end;
+procedure debajo_minimo(stock_act,stock_minimo:integer;var cant_productos: integer);
+  begin 
+    if(stock_act < stock_minimo)then begin 
+      cant_productos:= cant_productos + 1;
+    end;
+  end;
+function cumple(codigo:integer):boolean;
+  var
+    pares:integer;
+    num:integer;
+  begin 
+    cumple := false;
+    pares:= 0;
+    while (codigo <> 0)do begin 
+      num:= codigo mod 10;
+      if(num mod 2 = 0)then begin 
+        pares:= pares + 1;
+      end;
+      if(pares >= 3)then begin
+        cumple:=true;
+        codigo := 0;
+      end;
+      num:= num div 10;
+    end;
+  end;
+procedure mas_economico(cod_act:integer;precio:real;var eco1,eco2:real;var cod1,cod2:integer);
+  begin
+    if(eco1 > precio)then begin
+      cod2:=cod1;
+      eco2:=eco1;
+      cod1:=cod_act;
+      eco1:=precio;
+    end
+    else begin 
+      if(eco2 > precio)then begin
+        cod2:=cod_act;
+        eco2:=precio;
+      end;
+    end;
+  end;
+procedure recorrerlista(l:lista;var porcentaje:real;var cod1,cod2:integer);
+  var 
+    eco1,eco2:real;
+    total_productos,cant_productos:integer;
+  begin 
+    total_productos:=0;
+    cant_productos:= 0;
+    eco1:= 9999;
+    eco2:= 9999;
+    while(l <> nil) do begin 
+      debajo_minimo(l^.dato.stock_act,l^.dato.stock_minimo,cant_productos);
+      if(cumple(l^.dato.codigo))then begin 
+        writeln(l^.dato.descripcion);
+      end;
+      mas_economico(l^.dato.codigo,l^.dato.precio,eco1,eco2,cod1,cod2);
+      total_productos:= total_productos + 1;
+      l:=l^.sig;
+    end;
+    porcentaje:= cant_productos / total_productos;
+  end;
+var 
+  l:lista;
+  porcentaje:real;
+  cod1,cod2:integer;
+begin 
+  l:= nil;
+  cargarlista(l);
+  recorrerlista(l,porcentaje,cod1,cod2);
+  writeln('el porcentaje de productos con stock actual por debajo de su stock mínimo es:',porcentaje);
+  writeln('el código de los dos productos más económicos es: ',cod1,' y ',cod2);
+end.
