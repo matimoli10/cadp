@@ -1,0 +1,119 @@
+4. Una cátedra dispone de información de sus alumnos (a lo sumo 1000). De cada alumno se conoce nro de
+alumno, apellido y nombre y cantidad de asistencias a clase. Dicha información se encuentra ordenada por
+nro de alumno de manera ascendente. Se pide:
+a. Un módulo que retorne la posición del alumno con un nro de alumno recibido por parámetro. El
+alumno seguro existe.
+b. Un módulo que reciba un alumno y lo inserte en el vector.
+c. Un módulo que reciba la posición de un alumno dentro del vector y lo elimine.
+d. Un módulo que reciba un nro de alumno y elimine dicho alumno del vector
+e. Un módulo que elimine del vector todos los alumnos con cantidad de asistencias en 0.
+Nota: Realizar el programa principal que invoque los módulos desarrollados en los incisos previos con datos
+leídos de teclado.
+
+
+
+program ejercicio_4;
+const 
+  dimf=1000; 
+type 
+  rango = 1..dimf;
+  alumnos = record
+    numero_alumno: integer;
+    apellido:string;
+    nombre:string;
+    cant_asistencias:integer;
+  end;
+  catedra = array [rango] of alumnos;
+procedure ingresar (var a:alumnos);
+  begin
+    writeln('ingrese el numero alumno');
+    readln(a.numero_alumno);
+    writeln('ingrese el apellido del alumno');
+    readln(a.apellido);
+    writeln('ingrese el nombre del alumno');
+    readln(a.nombre);
+    writeln('ingre la cantidad de asistencias del alumno');
+    readln(a.cant_asistencias);
+  end;
+procedure cargar_vector (var c:catedra;var diml:integer); // se dispone
+  begin
+  
+  end;
+procedure retorna_pos(numero_alumno:integer;num,i:integer;var pos:integer);
+  begin 
+    if(numero_alumno = num)then begin
+      pos:=i;
+    end;
+  end;
+procedure insertar(var c:catedra;var diml:integer;a:alumnos;i:integer);
+  var 
+    z:integer;
+  begin 
+    z:=1;
+    if(diml+1 <= dimf)then begin
+      diml:= diml + 1;
+      for z:= i downto diml do begin  
+        c[z]:=c[z-1];
+      end;
+      c[i]:= a;
+    end;
+  end;
+procedure eliminar (var c:catedra;var diml:integer;i,pos_eliminar:integer);
+  var 
+    z:integer;
+  begin 
+    if(i = pos_eliminar)then begin
+      for z:= i to diml-1 do begin
+        c[z]:=c[z+1];
+      end;
+      diml:=diml-1;
+    end;
+  end;
+procedure eliminar2(var c:catedra;var diml:integer;i,num_alum:integer);
+  var 
+    z:integer;
+  begin 
+    if(c[i].numero_alumno = num_alum)then begin 
+      for z := i to diml do begin 
+        c[z]:=c[z+1];
+      end;
+      diml:=diml-1;
+    end;
+  end;
+procedure eliminar3 (var c:catedra;var diml:integer;i:integer);
+  var 
+    z:integer;
+  begin 
+    if(c[i].cant_asistencias = 0)then begin 
+      for z:= i to diml do begin 
+        c[z]:=c[z+1];
+      end;
+      diml:= diml - 1;
+    end;
+  end;
+var
+  c:catedra;
+  diml,i,num,pos,pos_eliminar,num_alum:integer;
+  a:alumnos;
+begin
+  diml:=1;
+  i:=1;
+  cargar_vector(c,diml);
+  writeln('elija un numero de alumno ');
+  readln(num);
+  writeln('ingrese un alumno');
+  ingresar(a);
+  writeln('ingrese el numero de la posicion a eliminar');
+  readln(pos_eliminar);
+  writeln('ingrese el numero de alumno a eliminar ');
+  readln(num_alum);
+  for i:= 1 to diml do begin 
+    retorna_pos(c[i].numero_alumno,num,i,pos);
+    if(a.numero_alumno < c[i+1].numero_alumno)and(a.numero_alumno > c[i-1].numero_alumno)then begin 
+      insertar(c,diml,a,i);
+    end;
+    eliminar(c,diml,i,pos_eliminar);
+    eliminar2(c,diml,i,num_alum);
+    eliminar3(c,diml,i);
+  end;
+end.
