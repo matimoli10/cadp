@@ -89,6 +89,33 @@ procedure recorrer_vector(v:viajes;diml:integer;var cv:cant_viajes_en_el_mes;var
       cant_viajes(cv,v[i].dia);
     end;
     monto_promedio(suma,diml,prom);
-    // no olvidarme de informar en el codigo principal
   end;
-procedure eliminar
+procedure eliminar (var v:viajes;i:integer;var diml:integer);
+  var 
+    z:integer;
+  begin 
+    if (v[i].distancia_recorrida = 100)then begin 
+      for z:= i to diml do begin
+        v[z]:=v[z+1];
+      end;
+      diml:= diml - 1;
+    end;
+  end;
+var 
+  v:viajes;
+  cv:cant_viajes_en_el_mes;
+  diml,i:integer;
+  prom,distancia1,monto_min:real;
+  dia: dia_del_mes;
+begin 
+  diml:=1;
+  monto_min:=9999;
+  inicializar_vector(cv);
+  cargar_vector(v,diml);
+  recorrer_vector(v,diml,cv,prom,distancia1,monto_min,dia1);
+  writeln('El monto promedio transportado de los viajes realizados es: ',prom);
+  writeln('se recorrio una distancia',distancia1,' y el día del mes en que se realizó el viaje que transportó menos dinero es: ',monto_min);
+  for i := 1 to max_dia do begin 
+    writeln('La cantidad de viajes realizados cada día del mes es: ',cv[i]);
+  end;
+end.
