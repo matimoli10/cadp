@@ -1,0 +1,128 @@
+1. Dado el siguiente programa:
+
+program JugamosConListas;
+type
+  lista = ^nodo;
+  nodo = record
+    num : integer;
+    sig : lista;
+  end;
+procedure armarNodo(var L: lista; v: integer);
+  var
+    aux : lista;
+  begin
+    new(aux);
+    aux^.num := v;
+    aux^.sig := L;
+    L := aux;
+  end;
+var
+  pri : lista;
+  valor : integer;
+begin
+  pri := nil;
+  writeln('Ingrese un numero');
+  read(valor);
+  while (valor <> 0)do begin
+    armarNodo(pri, valor);
+    writeln('Ingrese un numero');
+    read(valor);
+  end;
+  {imprimer lista}
+end.
+
+a. Indicar qué hace el programa.
+b. Indicar cómo queda conformada la lista si se lee la siguiente secuencia de números: 10 21 13 48 0.
+c. Implementar un módulo que imprima los números enteros guardados en la lista generada.
+d. Implementar un módulo que reciba la lista y un valor, e incremente con ese valor cada dato de la
+lista.
+
+a) el programa lo que hace es con un numero ingresado po teclado lo almacena en una lista hasta que se ingrese un numero que sea 0,el cual no se almacena y luego de eso lo imprime la lista,la lista se imprime del ultimo que almaceno hasta el primero que se almaceno por la forma en que cargo la lista.
+b) la lista va a quedar conformada como 48,13,21,10 siendo el primer valor de la lista el 48 que es el ultimo valor que es distito de 0 que se escribio.
+c) asi quedaria el programa con el mudulo y la llamada al mismo implementada para que imprima los numero.
+
+program JugamosConListas;
+type
+  lista = ^nodo;
+  nodo = record
+    num : integer;
+    sig : lista;
+  end;
+procedure armarNodo(var L: lista; v: integer);
+  var
+    aux : lista;
+  begin
+    new(aux);
+    aux^.num := v;
+    aux^.sig := L;
+    L := aux;
+  end;
+procedure leerlista(l:lista);
+  begin 
+    while (l <> nil) do begin 
+      writeln('imprimimos el numero ',l^.num);
+      l:=l^.sig;
+    end;
+  end;
+var
+  pri : lista;
+  valor : integer;
+begin
+  pri := nil;
+  writeln('Ingrese un numero');
+  read(valor);
+  while (valor <> 0)do begin
+    armarNodo(pri, valor);
+    writeln('Ingrese un numero');
+    read(valor);
+  end;
+  leerlista(pri);
+end.
+
+d) de la siguiente manera quedaria el codigo implementando lo pedidio en el insiso d
+
+program JugamosConListas;
+type
+  lista = ^nodo;
+  nodo = record
+    num : integer;
+    sig : lista;
+  end;
+procedure armarNodo(var L: lista; v: integer);
+  var
+    aux : lista;
+  begin
+    new(aux);
+    aux^.num := v;
+    aux^.sig := L;
+    L := aux;
+  end;
+procedure leerlista(var l:lista;num:integer);
+  var 
+    aux:lista;
+  begin 
+    aux:= l;
+    while (aux <> nil) do begin 
+      writeln('imprimimos el numero ',aux^.num);
+      aux^.num:= aux^.num + num;
+      writeln('el numero sumandole ',num,' queda como resultado ',aux^.num);
+      aux:=aux^.sig;
+    end;
+  end;
+var
+  pri : lista;
+  valor : integer;
+  num : integer;
+begin
+  pri := nil;
+  writeln('Ingrese un numero');
+  read(valor);
+  while (valor <> 0)do begin
+    armarNodo(pri, valor);
+    writeln('Ingrese un numero');
+    read(valor);
+  end;
+  writeln('ingrese le numero a sumar ');
+  readln(num);
+  leerlista(pri,num);
+end.
