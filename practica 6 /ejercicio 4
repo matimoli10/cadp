@@ -1,0 +1,83 @@
+4. Utilizando el programa del ejercicio 1, realizar los siguientes módulos:
+a. Máximo: recibe la lista como parámetro y retorna el elemento de valor máximo.
+b. Mínimo: recibe la lista como parámetro y retorna el elemento de valor mínimo.
+c. Múltiplos: recibe como parámetros la lista L y un valor entero A, y retorna la cantidad de
+elementos de la lista que son múltiplos de A.
+
+aplicando los mudulos pedidos con el programa del ejercicio 4 quedaria de la siguiente forma: 
+( NOTAR que los modulos que me pide en el punto a y en el punto b los realiza dentro de un solo modulo por comodidad)
+
+
+program JugamosConListas;
+type
+  lista = ^nodo;
+  nodo = record
+    num : integer;
+    sig : lista;
+  end;
+procedure agregaratras(var L: lista; v: integer;var ult:lista);
+  var
+    aux : lista;
+  begin
+    new(aux);
+    aux^.num := v;
+    if(l = nil)then begin 
+      L := aux;
+    end
+    else begin 
+      ult^.sig:= aux;
+    end;
+    ult:=aux;
+  end;
+procedure leerlista(l:lista);
+  begin 
+    while (l <> nil) do begin 
+      writeln('imprimimos el numero ',l^.num);
+      l:=l^.sig;
+    end;
+  end;
+procedure mayor_y_minimo (l:lista;var maximo,minimo:integer);
+  begin 
+    while (l <> nil)do begin 
+      if(l^.num > maximo)then begin 
+        maximo:= l^.num;
+      end;
+      if(l^.num < minimo)then begin 
+        minimo:= l^.num;
+      end;
+      l:=l^.sig;
+    end;
+  end;
+procedure multiplo(l:lista;var cant:integer;a:integer);
+  begin 
+    while (l <> nil)do begin 
+      if(l^.num mod a = 0)then begin 
+        cant:=cant+1;
+      end;
+      l:=l^.sig;
+    end;
+  end;
+var
+  pri : lista;
+  valor : integer;
+  ult : lista;
+  maximo,minimo,cant,a:integer;
+begin
+  pri := nil;
+  maximo:=0;
+  cant:=0;
+  minimo:=9999;
+  writeln('Ingrese un numero');
+  read(valor);
+  while (valor <> 0)do begin
+    agregaratras(pri, valor,ult);
+    writeln('Ingrese un numero');
+    read(valor);
+  end;
+  mayor_y_minimo(pri,maximo,minimo);
+  writeln('el numero mayor es: ',maximo,' y el menor es: ',minimo);
+  writeln('ingrese un numero para sacar la cantidad de multiplos de este numero que se encuentran en la lista');
+  readln(a);
+  multiplo(pri,cant,a);
+  writeln('la cantidad de multiplos es: ',cant);
+end.
