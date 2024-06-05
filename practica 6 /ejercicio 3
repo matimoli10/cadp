@@ -1,0 +1,51 @@
+3. Utilizando el programa del ejercicio 1, realizar los siguientes cambios:
+a. Modificar el módulo armarNodo para que los elementos se guarden en la lista en el orden en que
+fueron ingresados (agregar atrás).
+b. Modificar el módulo armarNodo para que los elementos se guarden en la lista en el orden en que
+fueron ingresados, manteniendo un puntero al último ingresado.
+
+a) b) 
+
+program JugamosConListas;
+type
+  lista = ^nodo;
+  nodo = record
+    num : integer;
+    sig : lista;
+  end;
+procedure agregaratras(var L: lista; v: integer;var ult:lista);
+  var
+    aux : lista;
+  begin
+    new(aux);
+    aux^.num := v;
+    if(l = nil)then begin 
+      L := aux;
+    end
+    else begin 
+      ult^.sig:= aux;
+    end;
+    ult:=aux;
+  end;
+procedure leerlista(l:lista);
+  begin 
+    while (l <> nil) do begin 
+      writeln('imprimimos el numero ',l^.num);
+      l:=l^.sig;
+    end;
+  end;
+var
+  pri : lista;
+  valor : integer;
+  ult : lista;
+begin
+  pri := nil;
+  writeln('Ingrese un numero');
+  read(valor);
+  while (valor <> 0)do begin
+    agregaratras(pri, valor,ult);
+    writeln('Ingrese un numero');
+    read(valor);
+  end;
+  leerlista(pri);
+end.
