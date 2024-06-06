@@ -1,0 +1,56 @@
+8. Utilizando el programa del ejercicio 1, modificar el módulo armarNodo para que los elementos de la
+lista queden ordenados de manera ascendente (insertar ordenado).
+
+asi quedaria el codigo con modulo armarnodo modificado para insertar ordenado.
+
+program ejercicio_8;
+type
+  lista = ^nodo;
+  nodo = record
+    num : integer;
+    sig : lista;
+  end;
+  
+procedure armarNodo(var L: lista; v: integer);
+  var
+    aux : lista;
+    ant,act:lista;
+  begin
+    new(aux);
+    aux^.num := v;
+    act:= l;
+    ant:= l;
+    while (act <> nil)and(act^.num < v)do begin 
+      ant:=act;
+      act:=act^.sig;
+    end;
+    if(act = ant)then begin 
+      l:=aux;
+    end
+    else begin 
+      ant^.sig:=aux;
+    end;
+    aux^.sig:=act;
+  end;
+  
+procedure leerlista(l:lista);
+  begin 
+    while (l <> nil) do begin 
+      writeln('imprimimos el numero ',l^.num);
+      l:=l^.sig;
+    end;
+  end;
+var
+  pri : lista;
+  valor : integer;
+begin
+  pri := nil;
+  writeln('Ingrese un numero');
+  read(valor);
+  while (valor <> 0)do begin
+    armarNodo(pri, valor);
+    writeln('Ingrese un numero');
+    read(valor);
+  end;
+  leerlista(pri);
+end.
