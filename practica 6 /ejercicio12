@@ -1,0 +1,113 @@
+12. Una empresa desarrolladora de juegos para teléfonos celulares con Android dispone de información de
+todos los dispositivos que poseen sus juegos instalados. De cada dispositivo se conoce la versión de
+Android instalada, el tamaño de la pantalla (en pulgadas) y la cantidad de memoria RAM que posee
+(medida en GB). La información disponible se encuentra ordenada por versión de Android. Realizar un
+programa que procese la información disponible de todos los dispositivos e informe:
+a. La cantidad de dispositivos para cada versión de Android.
+b. La cantidad de dispositivos con más de 3 GB de memoria y pantallas de a lo sumo a 5 pulgadas.
+c. El tamaño promedio de las pantallas de todos los dispositivos.
+
+
+SE SUPONE QUE EL CARGARLISTA SE DISPONE LO HICE PARA PROBAR EL CODIGO.
+
+
+program eejrcicio_12;
+type 
+  dispositivos = record
+    version_android: integer;
+    dimension_pantalla: integer;
+    cant_ram: integer;
+  end;
+  lista = ^nodo;
+    nodo = record
+      dato: dispositivos;
+      sig: lista;
+    end;
+{procedure ingresar(var d:dispositivos);
+  begin 
+    writeln('ingrese la versiond e android ');
+    readln(d.version_android);
+    if(d.version_android <> 0)then begin
+      writeln('ingrese el tamaño de la pantalla en pulgada ');
+      readln(d.dimension_pantalla);
+      writeln('ingrese la cantidad de memoria ram');
+      readln(d.cant_ram);
+      writeln(' ');
+    end;
+  end;
+procedure agregaratras(var l,ult:lista;d:dispositivos);
+  var
+    aux:lista;
+  begin 
+    new(aux);
+    aux^.dato:=d;
+    if(l = nil)then begin 
+      l:= aux;
+    end
+    else begin 
+      ult^.sig:=aux;
+    end;
+    ult:= aux;
+  end;}
+procedure cargarlista(var l:lista); // se dispone
+{  var 
+    d:dispositivos;
+    ult:lista;}
+  begin
+   { ingresar(d);
+    while (d.version_android <> 0)do begin 
+      agregaratras(l,ult,d);
+      ingresar(d);
+    end;}
+  end;
+procedure misma_version(var cant_version:integer);
+  begin 
+    cant_version:= cant_version + 1;
+  end;
+procedure cantidad_dispositivos(gb:integer;pulgada:integer;var cant_dispositivos:integer);
+  begin 
+    if(gb > 3)then begin
+      if(pulgada <= 5 )then begin 
+        cant_dispositivos:= cant_dispositivos + 1;
+      end;
+    end;
+  end;
+procedure recorrerlista(l:lista;var cant_dispositivos:integer;var prom:real);
+  var
+    cant_version,version_act,total_pulgadas,total_dispositivos:integer;
+  begin 
+    version_act:=l^.dato.version_android;
+    cant_version:=0;
+    total_pulgadas:=0;
+    total_dispositivos:=0;
+    while(l <> nil)do begin 
+      if(l^.dato.version_android = version_act)then begin 
+        misma_version(cant_version);
+      end
+      else begin
+        writeln('la cantidad de dispositivos para la version ',version_act,' es: ',cant_version);
+        cant_version:=0;
+        version_act:=l^.dato.version_android;
+        misma_version(cant_version);
+      end;
+      writeln('es ');
+      cantidad_dispositivos(l^.dato.cant_ram,l^.dato.dimension_pantalla,cant_dispositivos);
+      total_dispositivos:= total_dispositivos + 1;
+      total_pulgadas:= total_pulgadas + l^.dato.dimension_pantalla;
+      l:=l^.sig;
+    end;
+    prom:= total_pulgadas / total_dispositivos;
+    writeln('la cantidad de dispositivos para la version ',version_act,' es: ',cant_version);
+  end;
+var
+  l: lista;
+  cant_dispositivos: integer;
+  prom: real;
+begin 
+  l:=nil;
+  cant_dispositivos:=0;
+  cargarlista(l);
+  recorrerlista(l,cant_dispositivos,prom);
+  writeln('La cantidad de dispositivos con más de 3 GB de memoria y pantallas de a lo sumo a 5 pulgadas es: ',cant_dispositivos);
+  writeln('El tamaño promedio de las pantallas de todos los dispositivos es: ',prom);
+end.
