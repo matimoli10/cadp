@@ -1,0 +1,148 @@
+9. Utilizando el programa del ejercicio 1, realizar los siguientes módulos:
+a. EstáOrdenada: recibe la lista como parámetro y retorna true si la misma se encuentra ordenada, o
+false en caso contrario.
+b. Eliminar: recibe como parámetros la lista y un valor entero, y elimina dicho valor de la lista (si
+existe). Nota: la lista podría no estar ordenada.
+c. Sublista: recibe como parámetros la lista L y dos valores enteros A y B, y retorna una nueva lista
+con todos los elementos de la lista L mayores que A y menores que B.
+d. Modifique el módulo Sublista del inciso anterior, suponiendo que la lista L se encuentra ordenada
+de manera ascendente.
+e. Modifique el módulo Sublista del inciso anterior, suponiendo que la lista L se encuentra ordenada
+de manera descendente.
+
+el siguiente codigo resuelve todo lo pedido;
+
+program ejercicio_9;
+type
+  lista = ^nodo;
+  nodo = record
+    num : integer;
+    sig : lista;
+  end;
+  
+procedure armarNodo(var L: lista; v: integer);
+  var
+    aux : lista;
+  begin
+    new(aux);
+    aux^.num := v;
+    aux^.sig := L;
+    L := aux;
+  end;
+  
+procedure ordenada(l:lista;var retorna:boolean);
+  var 
+    ant:lista;
+  begin
+    ant:= l;
+    retorna := true;
+    while(l <> nil)and(retorna <> false)do begin
+      if(ant <> l)then begin
+        if(ant^.num > l^.num)then begin 
+          retorna:= false;
+        end;
+        ant:= l;
+        l:=l^.sig;
+      end
+      else begin
+        l:=l^.sig;
+      end;
+    end;
+  end;
+procedure eliminar(var l:lista;valor_eliminar:integer);
+  var 
+    aux,ant: lista;
+    retorna: boolean;
+  begin 
+    aux:=l;
+    ant:=l;
+    ordenada(l,retorna);
+    if(retorna = true)then begin
+      while(aux <> nil)and(aux^.num <> valor_eliminar)do begin 
+        ant:=aux;
+        aux:=aux^.sig;
+      end;
+      if(ant = aux)then begin
+        l:=aux^.sig;
+      end
+      else begin 
+        ant^.sig:=aux^.sig;
+      end;
+      dispose(aux);
+    end
+    else begin 
+      while (aux <> nil)and(aux^.num <> valor_eliminar)do begin
+        ant:=aux;
+        aux:=aux^.sig;
+      end;
+      if(ant = aux)then begin
+        l:=aux^.sig;
+      end
+      else begin
+        ant^.sig:=aux^.sig;
+      end;
+      dispose (aux);
+    end;
+  end;
+procedure sublista(l:lista;a,b:integer;var l2:lista);
+  begin 
+    while (l <> nil)do begin 
+      if(l^.num > a)and(l^.num < b)then begin 
+        armarNodo(l2,l^.num);
+      end;
+      l:=l^.sig;
+    end;
+  end;
+{procedure sublista_ordenada_asc(l:lista;a,b:integer;var l2:lista);  //ordenada de manera ascendente
+  begin 
+    while (l <> nil)and(l^.num <> b)do begin 
+      
+      if(l^.num > a)and(l^.num < b)then begin
+        armarNodo(l2,l^.num);
+      end;
+      l:=l^.sig;
+    end;
+  end;}
+{procedure sublista_ordenada_des(l:lista;a,b:integer;var l2:lista); //ordenada de manera descendente
+  begin 
+    while (l <> nil)and(l^.num <> a)do begin 
+      if(l^.num < b)and(l^.num > a)then begin
+        armarNodo(l2,l^.num);
+      end;
+      l:=l^.sig;
+    end;
+  end;}
+  
+procedure leerlista(l:lista);
+  begin 
+    while (l <> nil) do begin 
+      writeln('imprimimos el numero ',l^.num);
+      l:=l^.sig;
+    end;
+  end;
+var
+  l,l2 : lista;
+  valor : integer;
+  valor_eliminar,a,b: integer;
+begin
+  l := nil;
+  l2:= nil;
+  writeln('Ingrese un numero');
+  read(valor);
+  while (valor <> 0)do begin
+    armarNodo(l, valor);
+    writeln('Ingrese un numero');
+    read(valor);
+  end;
+  leerlista(l);
+  writeln('ingrese el valor a eliminar');
+  readln(valor_eliminar);
+  eliminar(l,valor_eliminar);
+  leerlista(l);
+  writeln('ingrese el numero tomado como el maximo');
+  readln(b);
+  writeln('ingrese le numero tomado como el minimo');
+  readln(a);
+  sublista(l,a,b,l2);
+  leerlista(l2);
+end.
