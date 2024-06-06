@@ -1,0 +1,136 @@
+7. El Programa Horizonte 2020 (H2020) de la Unión Europea ha publicado los criterios para financiar
+proyectos de investigación avanzada. Para los proyectos de sondas espaciales vistos en el ejercicio
+anterior, se han determinado los siguientes criterios:
+- Sólo se financiarán proyectos cuyo costo de mantenimiento no supere el costo de construcción.
+- No se financiarán proyectos espaciales que analicen ondas de radio, ya que esto puede realizarse
+desde la superficie terrestre con grandes antenas.
+A partir de la información disponible de las sondas espaciales (la lista generada en ejercicio 6),
+implementar un programa que:
+a. Invoque un módulo que reciba la información de una sonda espacial, y retorne si cumple o no con
+los nuevos criterios H2020.
+b. Utilizando el módulo desarrollado en a) implemente un módulo que procese la lista de sondas de
+la ESA y retorne dos listados, uno con los proyectos que cumplen con los nuevos criterios y otro
+con aquellos que no los cumplen.
+c. Invoque a un módulo que reciba una lista de proyectos de sondas espaciales e informe la cantidad
+y el costo total (construcción y mantenimiento) de los proyectos que no serán financiados por
+H2020. Para ello, utilice el módulo realizado en b.
+
+
+program ejercicio_7;
+const
+  max_rango = 7;
+type
+  rango = 1..7;
+  sonda = record
+    nombre: string;
+    duracion_mision: integer;
+    cost_contruccion: real;
+    cost_mantenimiento: real;
+    rango_espectro: rango;
+  end;
+  lista = ^nodo;
+  nodo = record
+    dato: sonda;
+    sig: lista;
+  end;
+procedure ingresar(var s:sonda);
+  begin
+    writeln('ingrese el nombre');
+    readln(s.nombre);
+    writeln('ingrese la duracion de la mision en meses');
+    readln(s.duracion_mision);
+    writeln('ingrese el costo de construccion');
+    readln(s.cost_contruccion);
+    writeln('ingrese el costo de mantenimiento');
+    readln(s.cost_mantenimiento);
+    writeln('ingrese el rango del espectro');
+    readln(s.rango_espectro);
+  end;
+procedure agregaradelante(var l:lista;s:sonda);
+  var
+    aux:lista;
+  begin
+    new(aux);
+    aux^.dato:= s;
+    aux^.sig:=l;
+    l:=aux;
+  end;
+procedure cargarlista(var l:lista);
+  var 
+    s:sonda;
+  begin
+    repeat
+      ingresar(s);
+      agregaradelante(l,s);
+    until(s.nombre = 'gaia');
+  end;  
+function cumple (costo_mantenimiento,costo_construccion:real;categoria:rango): boolean;
+  begin 
+    cumple:=true;
+    if(costo_mantenimiento > costo_construccion)then begin 
+      cumple:=false;
+    end;
+    if(categoria = 1) then begin 
+      cumple:=false;
+    end;
+  end;
+procedure guardar_en_l2 (l:lista;var l2:lista);
+  var 
+    aux:lista;
+  begin 
+    new(aux);
+    aux^.dato:=l^.dato;
+    aux^.sig:= l2;
+    l2:= aux;
+  end;
+procedure guardar_en_l3(l:lista;var l3:lista);
+  var
+    aux:lista;
+  begin
+    new(aux);
+    aux^.dato:=l^.dato;
+    aux^.sig:= l3;
+    l3:= aux;
+  end;
+procedure listado(l:lista;var l2,l3:lista);
+  begin 
+    if(cumple(l^.dato.cost_mantenimiento,l^.dato.cost_contruccion,l^.dato.rango_espectro))then begin
+      guardar_en_l2(l,l2);
+    end
+    else begin 
+      guardar_en_l3(l,l3);
+    end;
+  end;
+procedure lista_no_cumple_l3 (l3:lista;var cantidad_proyectos:integer;var costo_total:real);
+  var
+    suma:real;
+  begin 
+    while(l3 <> nil)do begin 
+      cantidad_proyectos:= cantidad_proyectos + 1;
+      suma:=l3^.dato.cost_contruccion + l3^.dato.cost_mantenimiento;
+      costo_total:=costo_total+suma;
+      l3:=l3^.sig;
+    end;
+  end;
+procedure  recorrerlista(l:lista;var l2,l3:lista);
+  begin
+    while (l <> nil)do begin 
+      listado(l,l2,l3);
+      l:=l^.sig;
+    end;
+  end;
+var 
+  l,l2,l3:lista;
+  cantidad_proyectos:integer;
+  costo_total:real;
+begin
+  l:=nil;
+  l2:=nil;
+  l3:=nil;
+  costo_total:=0;
+  cantidad_proyectos:=0;
+  cargarlista(l);
+  recorrerlista(l,l2,l3);
+  lista_no_cumple_l3(l3,cantidad_proyectos,costo_total);
+  writeln('la cantidad que no cumple el h2020 son: ',cantidad_proyectos,' con un costo total de: ',costo_total);
+end.
