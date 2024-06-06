@@ -1,0 +1,100 @@
+11. La Facultad de Informática debe seleccionar los 10 egresados con mejor promedio a los que la UNLP les
+entregará el premio Joaquín V. González. De cada egresado se conoce su número de alumno, apellido y
+el promedio obtenido durante toda su carrera.
+Implementar un programa que:
+
+a. Lea la información de todos los egresados, hasta ingresar el código 0, el cual no debe procesarse.
+b. Una vez ingresada la información de los egresados, informe el apellido y número de alumno de los
+egresados que recibirán el premio. La información debe imprimirse ordenada según el promedio
+del egresado (de mayor a menor).
+
+
+program ejercicio_11;
+const
+  cant_premios = 10;
+type 
+  rango=1..cant_premios;
+  egresado = record
+    num_alumno: integer;
+    apellido: string;
+    promedio: real;
+  end;
+  lista =^nodo;
+    nodo = record
+      dato: egresado;
+      sig:lista;
+    end;
+  vector_egresados = array [rango] of egresado;
+procedure ingresar(var e:egresado);
+  begin 
+    writeln('ingrese el numero de alumno');
+    readln(e.num_alumno);
+    if(e.num_alumno <> 0)then begin 
+      writeln('ingrese le apellido del alumno');
+      readln(e.apellido);
+      writeln('ingrese el promedio del alumno');
+      readln(e.promedio);
+    end;
+  end;
+procedure agregaradelante(var l:lista;e:egresado);
+  var 
+    aux:lista;
+  begin
+    new(aux);
+    aux^.dato:=e;
+    aux^.sig:=l;
+    l:= aux;
+  end;
+procedure cargarlista(var l:lista);
+  var
+    e:egresado;
+  begin 
+    ingresar(e);
+    while (e.num_alumno <> 0) do begin 
+      agregaradelante(l,e);
+      ingresar(e);
+    end;
+  end;
+procedure inicializovector(var ve:vector_egresados);
+  var 
+    i:integer;
+  begin 
+    for i := 1 to cant_premios do begin 
+      v[i]:= 0;
+    end;
+  end;
+procedure mejores_prom(e:egresado;var ve:vector_egresados);
+  var 
+    i,z:integer;
+    mayor:integer;
+  begin 
+    while (i < cant_premios)and(v[i].promedio > e.promedio)do begin 
+      i:= i + 1;
+    end;
+    if(v[i].promedio < e.promedio)then begin 
+      for z:= i+1 downto cant_premios do begin 
+        v[z]:=v[z-1];
+      end;
+      v[i]:=e;
+    end;
+  end;
+procedure recorrerlista(l:lista;var ve:vector_egresados);
+  begin 
+    while(l <> nil)do begin 
+      mejores_prom(l^.dato,ve);
+      l:=l^.sig;
+    end;
+  end;
+var 
+  l:lista;
+  ve:vector_egresados;
+  i:integer;
+begin 
+  l:= nil;
+  inicializovector(ve);
+  cargarlista(l);
+  recorrerlista(l,ve);
+  for i := 1 to cant_premios do begin 
+    writeln('el alumno ',ve[i].apellido,' con numero ',ve[i].numero,' es el ',i,' de los mejores promedios');
+  end;
+end;
