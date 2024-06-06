@@ -1,0 +1,127 @@
+10. Una empresa de sistemas está desarrollando un software para organizar listas de espera de clientes. Su
+funcionamiento es muy sencillo: cuando un cliente ingresa al local, se registra su DNI y se le entrega un
+número (que es el siguiente al último número entregado). El cliente quedará esperando a ser llamado
+por su número, en cuyo caso sale de la lista de espera. Se pide:
+a. Definir una estructura de datos apropiada para representar la lista de espera de clientes.
+b. Implementar el módulo RecibirCliente, que recibe como parámetro el DNI del cliente y la lista de
+clientes en espera, asigna un número al cliente y retorna la lista de espera actualizada.
+c. Implementar el módulo AtenderCliente, que recibe como parámetro la lista de clientes en espera,
+y retorna el número y DNI del cliente a ser atendido y la lista actualizada. El cliente atendido debe
+eliminarse de la lista de espera.
+d. Implementar un programa que simule la atención de los clientes. En dicho programa, primero
+llegarán todos los clientes juntos, se les dará un número de espera a cada uno de ellos, y luego se
+los atenderá de a uno por vez. El ingreso de clientes se realiza hasta que se lee el DNI 0, que no
+debe procesarse.
+
+
+program ejercicio_10;
+type 
+  cliente = record 
+    dni: integer;
+    numero: integer;
+  end;
+  lista = ^nodo;
+    nodo = record
+      dato: cliente;
+      sig: lista;
+    end;
+    
+procedure ingresar(var c:cliente;var num:integer);
+  begin 
+    writeln('ingrese el dni del cliente');
+    readln(c.dni);
+    if(c.dni <> 0)then begin 
+      num:= num + 1;
+      c.numero:= num;
+      writeln('aqui tiene el numero de espera: ',c.numero);
+    end;
+  end;
+procedure agregaratras(var l,ult:lista;c:cliente);
+  var 
+    aux:lista;
+  begin 
+    new(aux);
+    aux^.dato:=c;
+    if(l = nil)then begin
+      l:=aux;
+    end
+    else begin 
+      ult^.sig:= aux;
+    end;
+    ult:=aux;
+  end;
+procedure recibir_cliente(var l,ult:lista;c:cliente);
+  begin 
+    agregaratras(l,ult,c);
+  end;
+procedure eliminar(var l:lista);
+  var
+    aux:lista;
+  begin
+    aux:=l;
+    l:=aux^.sig;
+    dispose(aux);
+  end;
+procedure atendercliente (var l:lista;var dni_client,num_client:integer);
+  begin 
+    dni_client:=l^.dato.dni;
+    num_client:=l^.dato.numero;
+  end;
+procedure cargarlista(var l,ult:lista;var num:integer);
+  var 
+   c:cliente;
+  begin
+    ingresar(c,num);
+    writeln(' ');
+    while (c.dni <> 0)do begin
+      agregaratras(l,ult,c);
+      ingresar(c,num);
+      writeln(' ');
+    end;
+  end;
+procedure mostrarlista(l:lista);
+  begin 
+    writeln('los que faltan atender son:');
+    writeln(' ');
+    while(l <> nil)do begin 
+      writeln('el numero ',l^.dato.numero,' con dni: ',l^.dato.dni);
+      l:=l^.sig
+    end;
+    writeln(' ');
+  end;
+procedure recorrerlista(var l,ult:lista;var num:integer);
+  var
+    aux:lista;
+    dni_client,num_client:integer;
+    c:cliente;
+    respuesta:string;
+  begin
+    while(l^.dato.numero <> num)do begin 
+    aux:=l;
+    while (aux <> nil)do begin 
+      atendercliente(aux,dni_client,num_client);
+      eliminar(l);
+      writeln('hay que ingresar algun cliente a la lista ?');
+      readln(respuesta);
+      writeln(' ');
+      if(respuesta = 'si')then begin 
+        cargarlista(l,ult,num);
+      end;
+      writeln('llamamos al numero: ',num_client,' con dni: ',dni_client);
+      writeln(' ');
+      mostrarlista(l);
+      aux:=aux^.sig;
+    end;
+    end;
+  end;
+var 
+  l,ult:lista;
+  num:integer;
+begin  
+  l:= nil;
+  num:= 0;
+  cargarlista(l,ult,num);
+  writeln('estar atento que empezamos a llamar');
+  writeln(' ');
+  recorrerlista(l,ult,num);
+end.
