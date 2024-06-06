@@ -1,0 +1,116 @@
+program ejercicio_6;
+const
+  max_rango = 7;
+type
+  rango = 1..7;
+  sonda = record
+    nombre: string;
+    duracion_mision: integer;
+    cost_contruccion: real;
+    cost_mantenimiento: real;
+    rango_espectro: rango;
+  end;
+  lista = ^nodo;
+  nodo = record
+    dato: sonda;
+    sig: lista;
+  end;
+  vector_sonda = array [rango] of integer;
+procedure ingresar(var s:sonda);
+  begin
+    writeln('ingrese el nombre');
+    readln(s.nombre);
+    writeln('ingrese la duracion de la mision en meses');
+    readln(s.duracion_mision);
+    writeln('ingrese el costo de construccion');
+    readln(s.cost_contruccion);
+    writeln('ingrese el costo de mantenimiento');
+    readln(s.cost_mantenimiento);
+    writeln('ingrese el rango del espectro');
+    readln(s.rango_espectro);
+  end;
+procedure agregaradelante(var l:lista;s:sonda);
+  var
+    aux:lista;
+  begin
+    new(aux);
+    aux^.dato:= s;
+    aux^.sig:=l;
+    l:=aux;
+  end;
+procedure cargarlista(var l:lista;var total_duracion,total:integer;var cost_total:real);
+  var 
+    s:sonda;
+  begin
+    repeat
+      ingresar(s);
+      agregaradelante(l,s);
+      total_duracion:= total_duracion + s.duracion_mision;
+      total:=total+1;
+      cost_total:= cost_total + s.cost_contruccion 
+    until(s.nombre = 'gaia');
+  end;
+procedure costosa(nombre:string;cost_contruccion,cost_mantenimiento:real;var mas_costosa:real;var nomb:string);
+  var
+    suma:real;
+  begin 
+    suma:= cost_contruccion + cost_mantenimiento;
+    if(suma > mas_costosa)then begin 
+      nomb:=nombre;
+      mas_costosa:= suma;
+    end
+  end;
+procedure inicializar(var vs:vector_sonda);
+  var 
+    i:integer;
+  begin 
+    for i:= 1 to max_rango do begin 
+      vs[i]:=0;
+    end;
+  end;
+procedure cantidad_sonda(prom:integer;duracion_mision:integer;var cant_supera:integer);
+  begin 
+    if(duracion_mision > prom)then begin 
+      cant_supera:= cant_supera + 1;
+    end;
+  end;
+procedure supera_prom2(prom2,cost_contruccion:real;nombre:string);
+  begin 
+    if(cost_contruccion > prom2)then begin 
+      writeln('la sonda que el costo de construcción supera el costo promedio',prom2,' entre todas las sondas es: ',nombre);
+    end;
+  end;
+procedure  recorrerlista(l:lista;prom:integer;prom2:real;var nomb:string;var vs:vector_sonda;var cant_supera:integer);
+  var
+    mas_costosa:real;
+  begin
+    mas_costosa:=0;
+    while (l <> nil)do begin 
+      costosa(l^.dato.nombre,l^.dato.cost_contruccion,l^.dato.cost_mantenimiento,mas_costosa,nomb);
+      vs[l^.dato.rango_espectro]:= vs[l^.dato.rango_espectro] + 1;
+      cantidad_sonda (prom,l^.dato.duracion_mision,cant_supera);
+      supera_prom2(prom2,l^.dato.cost_contruccion,l^.dato.nombre);
+      l:=l^.sig;
+    end;
+  end;
+var 
+  l:lista;
+  vs:vector_sonda;
+  prom,cant_supera,total_duracion,total,i:integer;
+  prom2,cost_total:real;
+  nomb:string;
+begin
+  l:=nil;
+  cant_supera:=0;
+  total_duracion:=0;
+  cost_total:=0;
+  cargarlista(l,total_duracion,total,cost_total);
+  prom:= total_duracion div total;
+  prom2:= cost_total / total;
+  recorrerlista(l,prom,prom2,nomb,vs,cant_supera);
+  writeln('el nombre de la sonda mas costosa es: ',nomb);
+  for i := 1 to max_rango do begin 
+    writeln('la cantidad de sondas trabajando en el rango ',i,' es: ',vs[i]);
+  end;
+  writeln('la cantidad e sondas que la duracion estimada supera la durecion promedio',prom,' es: ',cant_supera);
+end.
