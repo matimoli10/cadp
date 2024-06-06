@@ -10,7 +10,7 @@ de manera ascendente.
 e. Modifique el módulo Sublista del inciso anterior, suponiendo que la lista L se encuentra ordenada
 de manera descendente.
 
-el siguiente codigo resuelve todo lo pedido;
+el siguiente codigo resuelve todo lo pedido
 
 program ejercicio_9;
 type
