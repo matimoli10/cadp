@@ -1,0 +1,134 @@
+13. El Portal de Revistas de la UNLP está estudiando el uso de sus sistemas de edición electrónica por parte
+de los usuarios. Para ello, se dispone de información sobre los 3600 usuarios que utilizan el portal. De
+cada usuario se conoce su email, su rol (1: Editor; 2. Autor; 3. Revisor; 4. Lector), revista en la que
+participa y cantidad de días desde el último acceso.
+a. Imprimir el nombre de usuario y la cantidad de días desde el último acceso de todos los usuarios
+de la revista Económica. El listado debe ordenarse a partir de la cantidad de días desde el último
+acceso (orden ascendente).
+b. Informar la cantidad de usuarios por cada rol para todas las revistas del portal.
+c. Informar los emails de los dos usuarios que hace más tiempo que no ingresan al portal.
+
+
+EL CARGARVERCTOR SE SUPONE QUE SE DISPONE, LO REALICE PARA PODER PROBAR EL CODIGO
+
+
+program ejercicio_13;
+const
+  max_usuarios = 4;
+  max_rol = 4;
+type 
+  rango = 1..max_usuarios;
+  rango2 = 1..max_rol;
+  usuario = record
+    email:string;
+    rol: rango2;
+    revista_participa:string;
+    ultimo_acceso: integer;
+  end;
+  vector_usuarios = array [rango] of usuario;
+  vector_cant_rol = array [rango2] of integer;
+  lista= ^nodo;
+    nodo = record
+      dato:usuario;
+      sig:lista;
+    end;
+procedure inicializarvector(var vc:vector_cant_rol);
+  var
+    i:integer;
+  begin 
+    for i := 1 to max_rol do begin 
+      vc[i]:=0;
+    end;
+  end;
+{procedure ingresar (var u:usuario);
+  begin 
+    writeln('ingrese el email');
+    readln(u.email);
+    writeln('ingrese el rol');
+    readln(u.rol);
+    writeln('ingrese en la revista que participa');
+    readln(u.revista_participa);
+    writeln('ingrese hace cuanto fue el ultimo acceso a al portal');
+    readln(u.ultimo_acceso);
+  end;}
+procedure cargarvector(var vu:vector_usuarios); // se dispone
+ { var 
+    u:usuario;
+    i:integer;}
+  begin 
+   { for i := 1 to max_usuarios do begin 
+      ingresar(u);
+      vu[i]:=u;
+    end;}
+  end;
+procedure agregarordenado(var l:lista;u:usuario);
+  var 
+    aux:lista;
+    ant,act:lista;
+  begin 
+    new(aux);
+    aux^.dato:=u;
+    ant:=l;
+    act:=l;
+    while(act <> nil)and(act^.dato.ultimo_acceso < aux^.dato.ultimo_acceso)do begin 
+      ant:=act;
+      act:=act^.sig;
+    end;
+    if(ant = act)then begin 
+      l:= aux;
+    end
+    else begin 
+      ant^.sig:=aux;
+    end;
+    aux^.sig:= act;
+  end;
+procedure cant_roles(rol:integer;var vc:vector_cant_rol);
+  begin 
+    vc[rol]:= vc[rol] + 1;
+  end;
+procedure mayor_ultimo_acceso(ultimo_acceso:integer;email:string;var email1,email2:string;var mayor1,mayor2:integer);
+  begin 
+    if(ultimo_acceso > mayor1)then begin 
+      mayor2:=mayor1;
+      email2:=email1;
+      email1:=email;
+      mayor1:=ultimo_acceso;
+    end
+    else begin 
+      if(ultimo_acceso > mayor2)then begin 
+        email2:=email;
+        mayor2:= ultimo_acceso;
+      end;
+    end;
+  end;
+procedure recorrervector(vu:vector_usuarios;var l:lista;var vc:vector_cant_rol;var email1,email2:string);
+  var 
+    mayor1,mayor2,i:integer;
+  begin 
+    mayor1:=0;
+    mayor2:=0;
+    for i := 1 to max_usuarios do begin 
+      if(vu[i].revista_participa = 'economica')then begin
+        writeln('el ultimo acceso del usuario es: ',i,' fue hace ',vu[i].ultimo_acceso,' dias');
+        agregarordenado(l,vu[i]);
+      end;
+      cant_roles(vu[i].rol,vc);
+      mayor_ultimo_acceso(vu[i].ultimo_acceso,vu[i].email,email1,email2,mayor1,mayor2);
+    end;
+  end;
+var 
+  l:lista;
+  vu:vector_usuarios;
+  vc:vector_cant_rol;
+  email1,email2:string;
+  i:integer;
+begin 
+  l:= nil;
+  inicializarvector(vc);
+  cargarvector(vu);
+  recorrervector(vu,l,vc,email1,email2);
+  for i := 1 to max_rol do begin 
+    writeln('la cantidad de usuarios para el rol: ',i,' es: ',vc[i]);
+  end;
+  writeln('el email de los dos usuarios que hace mas tiempo no ingresan son: ',email1,' y ',email2);
+end.
