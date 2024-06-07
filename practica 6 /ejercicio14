@@ -1,0 +1,202 @@
+14. La oficina de becas y subsidios desea optimizar los distintos tipos de ayuda financiera que se brinda a
+alumnos de la UNLP. Para ello, esta oficina cuenta con un registro detallado de todos los viajes
+realizados por una muestra de 1300 alumnos durante el mes de marzo. De cada viaje se conoce el
+código de alumno (entre 1 y 1300), día del mes, Facultad a la que pertenece y medio de transporte (1.
+colectivo urbano; 2. colectivo interurbano; 3. tren universitario; 4. tren Roca; 5. bicicleta). Tener en
+cuenta que un alumno puede utilizar más de un medio de transporte en un mismo día.
+Además, esta oficina cuenta con una tabla con información sobre el precio de cada tipo de viaje.
+Realizar un programa que lea la información de los viajes de los alumnos y los almacene en una
+estructura de datos apropiada. La lectura finaliza al ingresarse el código de alumno -1, que no debe
+procesarse.
+Una vez finalizada la lectura, informar:
+a. La cantidad de alumnos que realizan más de 6 viajes por día
+b. La cantidad de alumnos que gastan en transporte más de $80 por día.
+c. Los dos medios de transporte más utilizados.
+d. La cantidad de alumnos que combinan bicicleta con algún otro medio de transporte.
+
+SE DISPONE EL VECTOR TABLA CON LOS VALORES PERO LO HICE PARA PROBAR EL CODIGO
+
+program ejercicio_14;
+const
+  max_cod = 1300;
+  max_trasporte = 5;
+  max_dia = 31;
+type 
+  rango_cod = 1..max_cod;
+  rango_transporte = 1..max_trasporte;
+  rango_mes = 1..max_dia;
+  cant_transportes = array [rango_transporte] of integer;
+  alumno = record 
+    cod_alum: integer;
+    dia_mes: rango_mes;
+    facultad: string;
+    transporte: cant_transportes;
+  end;
+  cant_utilizados = array [rango_transporte] of integer;
+  tabla =array [rango_transporte] of integer;
+  lista = ^nodo;
+    nodo = record
+      dato: alumno;
+      sig: lista;
+    end;
+
+procedure cargar_tabla(var t:tabla); //se dispone
+  {var 
+    i:integer;}
+  begin 
+   { for i:= 1 to max_trasporte do begin
+      t[i]:= 30;
+    end;}
+  end;
+procedure inicializarvector(var ct:cant_transportes);
+  var 
+    i :integer;
+  begin 
+    for i := 1 to max_trasporte do begin 
+      ct[i]:= 0;
+    end;
+  end;
+procedure cargarvector (var ct:cant_transportes;cant:integer);
+  var 
+    tipo_transporte:integer;
+    i:integer;
+  begin 
+    for i := 1 to cant do begin 
+      writeln('ingrese el trasporte que uso');
+      readln(tipo_transporte);
+      ct[tipo_transporte]:= ct[tipo_transporte] + 1;
+    end;
+    writeln(' ');
+  end;
+  
+procedure ingresar(var a:alumno);
+  var 
+    cant:integer;
+    ct:cant_transportes;
+  begin 
+    writeln('ingrese el codigo del alumno');
+    readln(a.cod_alum);
+    if(a.cod_alum <> -1)then begin 
+      writeln('ingrese el dia del mes');
+      readln(a.dia_mes);
+      writeln('ingrese la facultad a la que pertenece');
+      readln(a.facultad);
+      writeln('la cantidad de transportes que uso en el dia');
+      readln(cant);
+      inicializarvector(ct);
+      cargarvector(ct,cant);
+      a.transporte := ct;
+    end;
+  end;
+procedure agregarordenado(var l:lista;a:alumno);
+  var 
+    aux,ant,act:lista;
+  begin 
+    new(aux);
+    aux^.dato:= a;
+    ant:= l;
+    act:= l;
+    while (act <> nil) and (act^.dato.dia_mes < aux^.dato.dia_mes)do begin 
+      ant:=act;
+      act:=act^.sig;
+    end;
+    if(ant = act)then begin 
+      l:= aux;
+    end
+    else begin 
+      ant^.sig:= aux;
+    end;
+    aux^.sig:= act;
+  end;
+procedure cargarlista(var l:lista);
+  var
+    a:alumno;
+  begin 
+    ingresar(a);
+    while(a.cod_alum <> -1)do begin 
+      agregarordenado(l,a);
+      ingresar(a);
+    end;
+  end;
+procedure inicializarvector2(var cu:cant_utilizados);
+  var 
+    i:integer;
+  begin 
+    for i := 1 to max_trasporte do begin
+      cu[i]:= 0;
+    end;
+  end;
+procedure cant_gasto(t:tabla;ct:cant_transportes;var cant_alum:integer;var gasta_mas_80:integer;var cu:cant_utilizados;var cant_bicicleta:integer);
+  var 
+    total:real;
+    i,cant,suma:integer;
+  begin 
+    total:=0;
+    suma:=0;
+    for i := 1 to max_trasporte do begin 
+      suma:= suma + ct[i];
+      cant:= ct[i] * t[i];
+      total:= total + cant;
+      cu[i]:= cu[i] + ct[i];
+      if(i = 5)then begin 
+        if(ct[i] <> 0)then begin 
+          cant_bicicleta:= cant_bicicleta + 1;
+        end;
+      end;
+    end;
+    if(total > 80)then begin 
+      gasta_mas_80:= gasta_mas_80 + 1;
+    end;
+    if(suma > 6)then begin 
+      cant_alum:= cant_alum + 1;
+    end;
+  end;
+procedure mas_utilizados(cu:cant_utilizados;var medio1,medio2:integer);
+  var 
+    i:integer;
+    mayor1,mayor2:integer;
+  begin 
+    mayor1:= 0;
+    mayor2:= 0;
+    for i:= 1 to max_trasporte do begin 
+      if(cu[i] > mayor1)then begin 
+        mayor2:=mayor1;
+        medio2:= medio1;
+        mayor1:= cu[i];
+        medio1:= i;
+      end
+      else begin 
+        if(cu[i] > mayor2)then begin 
+          mayor2:= cu[i];
+          medio2:= i;
+        end;
+      end;
+    end;
+  end;
+procedure recorrerlista(l:lista;var cant_alum:integer;var gasta_mas_80:integer;var medio1,medio2:integer;var cant_bicicleta:integer);
+  var 
+    t:tabla;
+    cu:cant_utilizados;
+  begin 
+    inicializarvector2(cu);
+    cargar_tabla(t);
+    while (l <> nil) do begin 
+      cant_gasto(t,l^.dato.transporte,cant_alum,gasta_mas_80,cu,cant_bicicleta);
+      l:=l^.sig;
+    end;
+    mas_utilizados(cu,medio1,medio2);
+  end;
+var 
+  l:lista;
+  cant_alum,gasta_mas_80,medio1,medio2,cant_bicicleta:integer;
+begin 
+  cargarlista(l);
+  cant_alum:= 0;
+  gasta_mas_80:= 0;
+  cant_bicicleta:= 0;
+  recorrerlista(l,cant_alum,gasta_mas_80,medio1,medio2,cant_bicicleta);
+  writeln('la cantidad de alumnos que realizan mas de 6 viajes por dia son: ',cant_alum);
+  writeln('la cantidad de alumnos que gastan en trasporte mas de 80 por dia son: ',gasta_mas_80);
+  writeln('los dos medios de transportes mas utilizados son: ',medio1,' y ',medio2);
+  writeln('la cantidad de alumnos que combinan bicileta con algun otro trasnporte es: ',cant_bicicleta);
+end.
