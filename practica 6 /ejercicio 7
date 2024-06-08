@@ -114,9 +114,9 @@ procedure lista_no_cumple_l3 (l3:lista;var cantidad_proyectos:integer;var costo_
   end;
 procedure  recorrerlista(l:lista;var l2,l3:lista);
   begin
-    while (l <> nil)do begin 
+    while (l2 <> nil)do begin 
       listado(l,l2,l3);
-      l:=l^.sig;
+      l2:=l2^.sig;
     end;
   end;
 var 
